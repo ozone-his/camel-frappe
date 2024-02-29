@@ -1,11 +1,12 @@
 package com.ozonehis.camel.frappe.sdk.internal;
 
+import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
 import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
 import okhttp3.Response;
 
 import java.io.InputStream;
 
-public record FrappeResponse(Response response, TransformerFactory transformerFactory) implements com.ozonehis.camel.frappe.sdk.api.FrappeResponse {
+public record DefaultFrappeResponse(Response response, TransformerFactory transformerFactory) implements FrappeResponse {
 	
 	@Override
 	public <T> T returnAs(Class<T> responseType) {

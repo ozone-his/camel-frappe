@@ -13,7 +13,7 @@ import org.apache.camel.spi.UriParams;
 /**
  * Camel endpoint configuration for {@link com.ozonehis.camel.api.proxy.FrappeGet}.
  */
-@ApiParams(apiName = "GET", 
+@ApiParams(apiName = "get", 
            description = "This class is a proxy to the Frappe SDKS's GetOperation",
            apiMethods = {@ApiMethod(methodName = "resource", description="This method retrieves the resource", signatures={"java.io.InputStream resource(String doctype, java.util.List<String> fields, java.util.List<java.util.List<String>> filters, java.util.Map<String, Object> queryParams)"})}, aliases = {})
 @UriParams

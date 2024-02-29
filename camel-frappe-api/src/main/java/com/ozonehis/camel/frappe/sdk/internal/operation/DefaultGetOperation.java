@@ -1,8 +1,9 @@
 package com.ozonehis.camel.frappe.sdk.internal.operation;
 
+import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
 import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
 import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
-import com.ozonehis.camel.frappe.sdk.internal.FrappeResponse;
+import com.ozonehis.camel.frappe.sdk.internal.DefaultFrappeResponse;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class DefaultGetOperation extends AbstractOperation<com.ozonehis.camel.frappe.sdk.api.FrappeResponse> implements GetOperation {
+public class DefaultGetOperation extends AbstractOperation<FrappeResponse> implements GetOperation {
 	
 	protected final List<String> fields = new ArrayList<>();
 	
@@ -24,12 +25,7 @@ public class DefaultGetOperation extends AbstractOperation<com.ozonehis.camel.fr
 	}
 	
 	@Override
-	public com.ozonehis.camel.frappe.sdk.api.FrappeResponse execute() {
-		HttpUrl httpUrl = HttpUrl.parse(url);
-		if (httpUrl == null || httpUrl.host().isEmpty()) {
-			throw new IllegalArgumentException("Invalid URL: " + url);
-		}
-		
+	protected FrappeResponse doExecute(HttpUrl httpUrl) {
 		HttpUrl.Builder httpUrlBuilder = httpUrl.newBuilder();
 		if (!fields.isEmpty()) {
 			StringBuilder fieldsAsString = new StringBuilder();
@@ -50,7 +46,7 @@ public class DefaultGetOperation extends AbstractOperation<com.ozonehis.camel.fr
 		okhttp3.Response response = onHttpResponse(
 				() -> httpClient.newCall(new Request.Builder().url(httpUrlBuilder.build()).get().build()).execute());
 		
-		return new FrappeResponse(response, transformerFactory);
+		return new DefaultFrappeResponse(response, transformerFactory);
 	}
 	
 	@Override
