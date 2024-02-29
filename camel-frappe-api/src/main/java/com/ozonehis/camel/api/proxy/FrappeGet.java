@@ -10,12 +10,10 @@ import java.util.Map;
 /**
  *  This class is a proxy to the Frappe SDKS's GetOperation.
  */
-public class FrappeGet {
-	
-	private final FrappeClient frappeClient;
+public class FrappeGet extends AbstractFrappeProxy {
 	
 	public FrappeGet(FrappeClient frappeClient) {
-		this.frappeClient = frappeClient;
+		super(frappeClient);
 	}
 	
 	/**
@@ -43,7 +41,7 @@ public class FrappeGet {
 	@SuppressWarnings("unchecked")
 	protected GetOperation newGetOperation(
 			String doctype, List<String> fields, List<List<String>> filters, Map<String, Object> queryParams) {
-		GetOperation getOperation = frappeClient.get(doctype);
+		GetOperation getOperation = this.frappeClient.get(doctype);
 		if (fields != null && !fields.isEmpty()) {
 			getOperation.withFields(fields);
 		}

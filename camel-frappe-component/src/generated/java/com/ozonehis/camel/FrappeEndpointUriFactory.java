@@ -21,7 +21,7 @@ public class FrappeEndpointUriFactory extends org.apache.camel.support.component
     private static final Set<String> SECRET_PROPERTY_NAMES;
     private static final Set<String> MULTI_VALUE_PREFIXES;
     static {
-        Set<String> props = new HashSet<>(31);
+        Set<String> props = new HashSet<>(32);
         props.add("apiName");
         props.add("backoffErrorThreshold");
         props.add("backoffIdleThreshold");
@@ -44,6 +44,7 @@ public class FrappeEndpointUriFactory extends org.apache.camel.support.component
         props.add("pollStrategy");
         props.add("queryParams");
         props.add("repeatCount");
+        props.add("resource");
         props.add("runLoggingLevel");
         props.add("scheduledExecutorService");
         props.add("scheduler");

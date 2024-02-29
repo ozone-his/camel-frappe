@@ -5,6 +5,7 @@ import com.ozonehis.camel.frappe.sdk.api.RemoteFrappeClientException;
 import com.ozonehis.camel.frappe.sdk.api.operation.ParameterizedOperation;
 import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
@@ -48,6 +49,7 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 	
 	@Override
 	public ParameterizedOperation<T> withParameters(Map<String, String> parameters) {
+		parameters.forEach(this::withParameter);
 		return this;
 	}
 	
@@ -55,11 +57,24 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 	public ParameterizedOperation<T> withParameter(String name, String value) {
 		List<String> values = queryParams.computeIfAbsent(name, k -> new ArrayList<>());
 		values.add(value);
-		
+		this.queryParams.put(name, values);
 		return this;
 	}
 	
+	@Override
+	public T execute() {
+		HttpUrl httpUrl = HttpUrl.parse(url);
+		if (httpUrl == null || httpUrl.host().isEmpty()) {
+			throw new IllegalArgumentException("Invalid URL: " + url);
+		}
+		
+		HttpUrl.Builder httpUrlBuilder = httpUrl.newBuilder();
+		queryParams.forEach((name, values) -> values.forEach(value -> httpUrlBuilder.addQueryParameter(name, value)));
+		
+		return doExecute(httpUrlBuilder.build());
+	}
 	
+	protected abstract T doExecute(HttpUrl httpUrl);
 	
 	protected Optional<String> convertFiltersToString(List<List<String>> filters) {
 		String filtersAsString = filters.stream()
@@ -85,6 +100,7 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 			try {
 				if (response.body() != null) {
 					body = response.body().string();
+					log.error("Error response: {}", body);
 				}
 			} catch (IOException e) {
 				throw new FrappeClientException(e);

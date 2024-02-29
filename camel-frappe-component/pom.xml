@@ -105,12 +105,20 @@
             <configuration>
               <apis>
                 <api>
-                  <apiName>GET</apiName>
+                  <apiName>get</apiName>
                   <proxyClass>com.ozonehis.camel.api.proxy.FrappeGet</proxyClass>
                   <fromJavasource />
                   <nullableOptions>
                     <nullableOption>fields</nullableOption>
                     <nullableOption>filters</nullableOption>
+                    <nullableOption>queryParams</nullableOption>
+                  </nullableOptions>
+                </api>
+                <api>
+                  <apiName>post</apiName>
+                  <proxyClass>com.ozonehis.camel.api.proxy.FrappePost</proxyClass>
+                  <fromJavasource />
+                  <nullableOptions>
                     <nullableOption>queryParams</nullableOption>
                   </nullableOptions>
                 </api>

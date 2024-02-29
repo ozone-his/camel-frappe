@@ -10,7 +10,9 @@ import org.apache.camel.support.component.ApiName;
  */
 public enum FrappeApiName implements ApiName {
 
-    GET("GET");
+    GET("get"),
+
+    POST("post");
 
 
     private final String name;
