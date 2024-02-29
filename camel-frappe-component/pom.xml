@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.ozonehis.camel</groupId>
+    <artifactId>camel-frappe-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>camel-frappe</artifactId>
+  <packaging>jar</packaging>
+  <name>Camel Frappe Component</name>
+  <description>Camel Component for Frappe</description>
+
+  <properties>
+    <schemeName>frappe</schemeName>
+    <componentName>Frappe</componentName>
+    <componentPackage>com.ozonehis.camel</componentPackage>
+    <outPackage>com.ozonehis.camel.internal</outPackage>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-support</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.ozonehis.camel</groupId>
+      <artifactId>camel-frappe-api</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- logging -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
+      <version>2.20.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.20.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- testing -->
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>1.19.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>1.19.6</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-test-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+
+    <plugins>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>17</release>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
+      <!-- generate Component source and test source -->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-api-component-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-test-component-classes</id>
+            <goals>
+              <goal>fromApis</goal>
+            </goals>
+            <configuration>
+              <apis>
+                <api>
+                  <apiName>GET</apiName>
+                  <proxyClass>com.ozonehis.camel.api.proxy.FrappeGet</proxyClass>
+                  <fromJavasource />
+                  <nullableOptions>
+                    <nullableOption>fields</nullableOption>
+                    <nullableOption>filters</nullableOption>
+                    <nullableOption>queryParams</nullableOption>
+                  </nullableOptions>
+                </api>
+              </apis>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.ozonehis.camel</groupId>
+            <artifactId>camel-frappe-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <classifier>sources</classifier>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <!-- generate camel meta-data -->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-component-maven-plugin</artifactId>
+        <version>4.4.0</version>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- add generated source and test source to build -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <id>add-generated-sources</id>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/camel-component</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-generated-test-sources</id>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-test-sources/camel-component</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.camel</groupId>
+          <artifactId>camel-api-component-maven-plugin</artifactId>
+          <version>${camel.version}</version>
+          <configuration>
+            <scheme>${schemeName}</scheme>
+            <componentName>${componentName}</componentName>
+            <componentPackage>${componentPackage}</componentPackage>
+            <outPackage>${outPackage}</outPackage>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-api-component-maven-plugin</artifactId>
+        <version>${camel.version}</version>
+        <configuration>
+          <scheme>${schemeName}</scheme>
+          <componentName>${componentName}</componentName>
+          <componentPackage>${componentPackage}</componentPackage>
+          <outPackage>${outPackage}</outPackage>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>
