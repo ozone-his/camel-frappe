@@ -1,10 +1,12 @@
 package com.ozonehis.camel.frappe.sdk;
 
 import com.ozonehis.camel.frappe.sdk.api.FrappeClient;
+import com.ozonehis.camel.frappe.sdk.api.operation.DeleteOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.ResourceOperation;
 import com.ozonehis.camel.frappe.sdk.api.security.FrappeAuthentication;
 import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
 import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
+import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultDeleteOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultGetOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPostOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPutOperation;
@@ -52,6 +54,11 @@ public class DefaultFrappeClient implements FrappeClient {
 	@Override
 	public ResourceOperation put(String doctype, String... pathParams) {
 		return new DefaultPutOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory(), pathParams);
+	}
+	
+	@Override
+	public DeleteOperation delete(String doctype) {
+		return new DefaultDeleteOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory());
 	}
 	
 	@Override
