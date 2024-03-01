@@ -39,10 +39,8 @@ public abstract class AbstractResourceOperation extends AbstractOperation<Frappe
 		return Optional.ofNullable(resource)
 				.map(res -> {
 					if (res instanceof String) {
-						log.info("Resource is a string ... {}", res);
 						return ((String) res).getBytes(StandardCharsets.UTF_8);
 					} else {
-						log.info("Resource is an object ... {}", res);
 						return transformerFactory.createRequestTransformer((Class) res.getClass()).transform(res)
 								.getBytes(StandardCharsets.UTF_8);
 					}

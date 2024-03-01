@@ -12,6 +12,7 @@ import java.util.Map;
 import com.ozonehis.camel.FrappeConfiguration;
 import com.ozonehis.camel.FrappeGetEndpointConfiguration;
 import com.ozonehis.camel.FrappePostEndpointConfiguration;
+import com.ozonehis.camel.FrappePutEndpointConfiguration;
 
 import org.apache.camel.support.component.ApiCollection;
 import org.apache.camel.support.component.ApiMethod;
@@ -41,6 +42,11 @@ public final class FrappeApiCollection extends ApiCollection<FrappeApiName, Frap
         apiHelpers.put(FrappeApiName.POST, new ApiMethodHelper<>(FrappePostApiMethod.class, aliases, nullableArgs));
         apiMethods.put(FrappePostApiMethod.class, FrappeApiName.POST);
 
+        aliases.clear();
+        nullableArgs = Arrays.asList("queryParams");
+        apiHelpers.put(FrappeApiName.PUT, new ApiMethodHelper<>(FrappePutApiMethod.class, aliases, nullableArgs));
+        apiMethods.put(FrappePutApiMethod.class, FrappeApiName.PUT);
+
         setApiHelpers(apiHelpers);
         setApiMethods(apiMethods);
     }
@@ -53,6 +59,9 @@ public final class FrappeApiCollection extends ApiCollection<FrappeApiName, Frap
                 break;
             case POST:
                 result = new FrappePostEndpointConfiguration();
+                break;
+            case PUT:
+                result = new FrappePutEndpointConfiguration();
                 break;
         }
         return result;

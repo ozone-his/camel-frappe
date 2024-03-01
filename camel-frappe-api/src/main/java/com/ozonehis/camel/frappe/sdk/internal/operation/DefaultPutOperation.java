@@ -4,17 +4,15 @@ import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
 import com.ozonehis.camel.frappe.sdk.api.operation.ResourceOperation;
 import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
 import com.ozonehis.camel.frappe.sdk.internal.DefaultFrappeResponse;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-@Slf4j
-public class DefaultPostOperation extends AbstractResourceOperation implements ResourceOperation {
+public class DefaultPutOperation extends AbstractResourceOperation  implements ResourceOperation {
 	
-	public DefaultPostOperation(String baseApiUrl, String doctype, OkHttpClient httpClient,
+	public DefaultPutOperation(String baseApiUrl, String path, OkHttpClient httpClient,
 			TransformerFactory transformerFactory, String... pathParams) {
-		super(baseApiUrl, doctype, httpClient, transformerFactory, pathParams);
+		super(baseApiUrl, path, httpClient, transformerFactory, pathParams);
 	}
 	
 	@Override
