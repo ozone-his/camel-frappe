@@ -1,5 +1,6 @@
 package com.ozonehis.camel;
 
+import com.ozonehis.camel.api.proxy.FrappeDelete;
 import com.ozonehis.camel.api.proxy.FrappeGet;
 import com.ozonehis.camel.api.proxy.FrappePost;
 import com.ozonehis.camel.api.proxy.FrappePut;
@@ -74,6 +75,9 @@ public class FrappeEndpoint extends AbstractApiEndpoint<FrappeApiName, FrappeCon
                 break;
             case PUT:
                 apiProxy = new FrappePut(getClient());
+                break;
+            case DELETE:
+                apiProxy = new FrappeDelete(getClient());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid API name " + apiName);

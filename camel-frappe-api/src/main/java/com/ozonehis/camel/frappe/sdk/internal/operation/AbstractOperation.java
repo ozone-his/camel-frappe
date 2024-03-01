@@ -83,7 +83,6 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 						.collect(Collectors.joining(", ", "[", "]")))
 				.collect(Collectors.joining(", ", "[", "]"));
 		
-		log.info("Filters: {}", filtersAsString);
 		return Optional.of(filtersAsString);
 	}
 	
@@ -100,10 +99,9 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 			try {
 				if (response.body() != null) {
 					body = response.body().string();
-					log.error("Error response: {}", body);
 				}
 			} catch (IOException e) {
-				throw new FrappeClientException(e);
+				throw new FrappeClientException("Failed to read response body", e);
 			}
 			response.close();
 			throw new RemoteFrappeClientException(response.toString(), response.code(), body);

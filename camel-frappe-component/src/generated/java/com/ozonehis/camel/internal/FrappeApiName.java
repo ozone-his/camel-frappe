@@ -14,7 +14,9 @@ public enum FrappeApiName implements ApiName {
 
     POST("post"),
 
-    PUT("put");
+    PUT("put"),
+
+    DELETE("delete");
 
 
     private final String name;

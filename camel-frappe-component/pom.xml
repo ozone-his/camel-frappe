@@ -130,6 +130,11 @@
                     <nullableOption>queryParams</nullableOption>
                   </nullableOptions>
                 </api>
+                <api>
+                  <apiName>delete</apiName>
+                  <proxyClass>com.ozonehis.camel.api.proxy.FrappeDelete</proxyClass>
+                  <fromJavasource />
+                </api>
               </apis>
             </configuration>
           </execution>
