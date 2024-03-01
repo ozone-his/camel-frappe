@@ -7,6 +7,7 @@ import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
 import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultGetOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPostOperation;
+import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPutOperation;
 import com.ozonehis.camel.frappe.sdk.internal.security.cookie.InMemoryCookieJar;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
@@ -46,6 +47,11 @@ public class DefaultFrappeClient implements FrappeClient {
 	@Override
 	public ResourceOperation post(String doctype, String... pathParams) {
 		return new DefaultPostOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory(), pathParams);
+	}
+	
+	@Override
+	public ResourceOperation put(String doctype, String... pathParams) {
+		return new DefaultPutOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory(), pathParams);
 	}
 	
 	@Override

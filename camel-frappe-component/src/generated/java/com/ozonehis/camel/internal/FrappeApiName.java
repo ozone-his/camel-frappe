@@ -12,7 +12,9 @@ public enum FrappeApiName implements ApiName {
 
     GET("get"),
 
-    POST("post");
+    POST("post"),
+
+    PUT("put");
 
 
     private final String name;

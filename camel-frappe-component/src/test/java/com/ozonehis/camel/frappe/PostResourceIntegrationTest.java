@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PostResourceIntegrationTest extends AbstractFrappeTestSupport {
 	
-	private static final String PATH_PREFIX = FrappeApiCollection.getCollection().getApiName(FrappePostApiMethod.class)
+	private static final String POST_PATH_PREFIX = FrappeApiCollection.getCollection().getApiName(FrappePostApiMethod.class)
 			.getName();
 	
 	private static final String CUSTOMER_DOCTYPE = "Customer";
@@ -25,12 +25,12 @@ public class PostResourceIntegrationTest extends AbstractFrappeTestSupport {
 			
 			@Override
 			public void configure() {
-				from("direct://create-customer")
+				from("direct://createCustomer")
 						.setProperty("resource", simple("${body}"))
-						.toD("frappe://" + PATH_PREFIX + "/resource?doctype=" + CUSTOMER_DOCTYPE + "&resource=" + "${exchangeProperty.resource}")
+						.toD("frappe://" + POST_PATH_PREFIX + "/resource?doctype=" + CUSTOMER_DOCTYPE)
 						.end();
 				
-				from("direct://get-customer")
+				from("direct://getCustomer")
 						.to("frappe://get/resource?doctype=" + CUSTOMER_DOCTYPE)
 						.log("Customer: ${body}").end();
 			}
@@ -38,8 +38,12 @@ public class PostResourceIntegrationTest extends AbstractFrappeTestSupport {
 	}
 	
 	@Test
-	public void shouldPostResourceWithAnyDocType() {
-		var customer = requestBody("direct://create-customer", CUSTOMER_JSON, String.class);
+	public void shouldCreateResourceWithCustomerDocType() {
+		var postHeaders = new HashMap<String, Object>();
+		postHeaders.put("CamelFrappe.doctype", CUSTOMER_DOCTYPE);
+		postHeaders.put("CamelFrappe.resource", CUSTOMER_JSON);
+		
+		var customer = requestBodyAndHeaders("direct://createCustomer", CUSTOMER_JSON, postHeaders, String.class);
 		
 		assertNotNull(customer, "returns Customer");
 		assertTrue(customer.contains("John"), "Customer Name is John");
@@ -47,7 +51,7 @@ public class PostResourceIntegrationTest extends AbstractFrappeTestSupport {
 		// Get just created customer named John
 		var headers = new HashMap<String, Object>();
 		headers.put("CamelFrappe.filters", List.of(List.of("customer_name", "=", "John")));
-		var customers = requestBodyAndHeaders("direct://get-customer", null, headers, String.class);
+		var customers = requestBodyAndHeaders("direct://getCustomer", null, headers, String.class);
 		
 		assertNotNull(customers, "Get Customer Doctype");
 		assertTrue(customers.contains("John"), "Returns John");

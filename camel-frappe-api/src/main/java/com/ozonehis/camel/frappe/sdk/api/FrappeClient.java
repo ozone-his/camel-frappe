@@ -29,6 +29,15 @@ public interface FrappeClient {
 	ResourceOperation post(String doctype, String... pathParams);
 	
 	/**
+	 * This method creates a PUT operation.
+	 *
+	 * @param doctype The doctype.
+	 * @param pathParams The doctype parameters.
+	 * @return The PUT operation.
+	 */
+	ResourceOperation put(String doctype, String... pathParams);
+	
+	/**
 	 * This method gets the HTTP client.
 	 *
 	 * @return The HTTP client.
