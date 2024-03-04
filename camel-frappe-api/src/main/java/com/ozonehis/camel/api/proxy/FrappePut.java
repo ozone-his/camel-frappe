@@ -1,10 +1,9 @@
 package com.ozonehis.camel.api.proxy;
 
 import com.ozonehis.camel.frappe.sdk.api.FrappeClient;
-import com.ozonehis.camel.frappe.sdk.api.operation.ResourceOperation;
+import com.ozonehis.camel.frappe.sdk.api.operation.PutOperation;
 
 import java.io.InputStream;
-import java.util.Map;
 
 public class FrappePut extends AbstractFrappeProxy {
 	
@@ -12,16 +11,15 @@ public class FrappePut extends AbstractFrappeProxy {
 		super(frappeClient);
 	}
 	
-	public InputStream resource(String doctype, String name, Object resource, Map<String, Object> queryParams) {
-		ResourceOperation putOperation = frappeClient.put(doctype, name);
-		if (queryParams != null) {
-			for (Map.Entry<String, Object> queryParam : queryParams.entrySet()) {
-				putOperation.withParameter(queryParam.getKey(), (String) queryParam.getValue());
-			}
-		}
+	public InputStream resource(String doctype, String name, Object resource) {
+		PutOperation putOperation = frappeClient.put(doctype);
 		
 		if (resource != null) {
 			putOperation.withResource(resource);
+		}
+		
+		if (name != null) {
+			putOperation.withName(name);
 		}
 		
 		return putOperation.execute().read();

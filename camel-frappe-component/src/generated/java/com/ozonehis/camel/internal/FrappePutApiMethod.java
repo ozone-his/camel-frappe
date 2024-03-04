@@ -24,8 +24,7 @@ public enum FrappePutApiMethod implements ApiMethod {
         "resource",
         arg("doctype", String.class),
         arg("name", String.class),
-        arg("resource", Object.class),
-        arg("queryParams", java.util.Map.class));
+        arg("resource", Object.class));
 
     private final ApiMethod apiMethod;
 

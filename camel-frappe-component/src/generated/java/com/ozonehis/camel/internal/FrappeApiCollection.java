@@ -44,7 +44,7 @@ public final class FrappeApiCollection extends ApiCollection<FrappeApiName, Frap
         apiMethods.put(FrappePostApiMethod.class, FrappeApiName.POST);
 
         aliases.clear();
-        nullableArgs = Arrays.asList("queryParams");
+        nullableArgs = Arrays.asList();
         apiHelpers.put(FrappeApiName.PUT, new ApiMethodHelper<>(FrappePutApiMethod.class, aliases, nullableArgs));
         apiMethods.put(FrappePutApiMethod.class, FrappeApiName.PUT);
 

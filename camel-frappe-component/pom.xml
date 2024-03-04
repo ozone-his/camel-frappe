@@ -126,9 +126,6 @@
                   <apiName>put</apiName>
                   <proxyClass>com.ozonehis.camel.api.proxy.FrappePut</proxyClass>
                   <fromJavasource />
-                  <nullableOptions>
-                    <nullableOption>queryParams</nullableOption>
-                  </nullableOptions>
                 </api>
                 <api>
                   <apiName>delete</apiName>

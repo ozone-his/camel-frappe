@@ -27,7 +27,6 @@ public class FrappePutEndpointConfigurationConfigurer extends org.apache.camel.s
         map.put("MethodName", java.lang.String.class);
         map.put("Name", java.lang.String.class);
         map.put("Password", java.lang.String.class);
-        map.put("QueryParams", java.util.Map.class);
         map.put("Resource", java.lang.Object.class);
         map.put("Username", java.lang.String.class);
         ALL_OPTIONS = map;
@@ -51,8 +50,6 @@ public class FrappePutEndpointConfigurationConfigurer extends org.apache.camel.s
         case "Name": target.setName(property(camelContext, java.lang.String.class, value)); return true;
         case "password":
         case "Password": target.setPassword(property(camelContext, java.lang.String.class, value)); return true;
-        case "queryparams":
-        case "QueryParams": target.setQueryParams(property(camelContext, java.util.Map.class, value)); return true;
         case "resource":
         case "Resource": target.setResource(property(camelContext, java.lang.Object.class, value)); return true;
         case "username":
@@ -83,8 +80,6 @@ public class FrappePutEndpointConfigurationConfigurer extends org.apache.camel.s
         case "Name": return java.lang.String.class;
         case "password":
         case "Password": return java.lang.String.class;
-        case "queryparams":
-        case "QueryParams": return java.util.Map.class;
         case "resource":
         case "Resource": return java.lang.Object.class;
         case "username":
@@ -111,21 +106,10 @@ public class FrappePutEndpointConfigurationConfigurer extends org.apache.camel.s
         case "Name": return target.getName();
         case "password":
         case "Password": return target.getPassword();
-        case "queryparams":
-        case "QueryParams": return target.getQueryParams();
         case "resource":
         case "Resource": return target.getResource();
         case "username":
         case "Username": return target.getUsername();
-        default: return null;
-        }
-    }
-
-    @Override
-    public Object getCollectionValueType(Object target, String name, boolean ignoreCase) {
-        switch (ignoreCase ? name.toLowerCase() : name) {
-        case "queryparams":
-        case "QueryParams": return java.lang.Object.class;
         default: return null;
         }
     }
