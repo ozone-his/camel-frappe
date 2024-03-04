@@ -2,6 +2,7 @@ package com.ozonehis.camel.frappe.sdk.api;
 
 import com.ozonehis.camel.frappe.sdk.api.operation.DeleteOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
+import com.ozonehis.camel.frappe.sdk.api.operation.PutOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.ResourceOperation;
 import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
 import okhttp3.OkHttpClient;
@@ -33,10 +34,9 @@ public interface FrappeClient {
 	 * This method creates a PUT operation.
 	 *
 	 * @param doctype The doctype.
-	 * @param pathParams The doctype parameters.
 	 * @return The PUT operation.
 	 */
-	ResourceOperation put(String doctype, String... pathParams);
+	PutOperation put(String doctype);
 	
 	/**
 	 * This method creates a DELETE operation.

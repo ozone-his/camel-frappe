@@ -15,7 +15,7 @@ import org.apache.camel.spi.UriParams;
  */
 @ApiParams(apiName = "put", 
            description = "",
-           apiMethods = {@ApiMethod(methodName = "resource", signatures={"java.io.InputStream resource(String doctype, String name, Object resource, java.util.Map<String, Object> queryParams)"})}, aliases = {})
+           apiMethods = {@ApiMethod(methodName = "resource", signatures={"java.io.InputStream resource(String doctype, String name, Object resource)"})}, aliases = {})
 @UriParams
 @Configurer(extended = true)
 public final class FrappePutEndpointConfiguration extends FrappeConfiguration {
@@ -25,9 +25,6 @@ public final class FrappePutEndpointConfiguration extends FrappeConfiguration {
     @UriParam
     @ApiParam(optional = false, apiMethods = {@ApiMethod(methodName = "resource")})
     private String name;
-    @UriParam
-    @ApiParam(optional = true, apiMethods = {@ApiMethod(methodName = "resource")})
-    private java.util.Map<String, Object> queryParams;
     @UriParam
     @ApiParam(optional = false, apiMethods = {@ApiMethod(methodName = "resource")})
     private Object resource;
@@ -46,14 +43,6 @@ public final class FrappePutEndpointConfiguration extends FrappeConfiguration {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public java.util.Map<String, Object> getQueryParams() {
-        return queryParams;
-    }
-
-    public void setQueryParams(java.util.Map<String, Object> queryParams) {
-        this.queryParams = queryParams;
     }
 
     public Object getResource() {
