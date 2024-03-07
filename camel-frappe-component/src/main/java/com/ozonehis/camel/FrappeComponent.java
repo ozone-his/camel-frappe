@@ -8,9 +8,10 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.RuntimeCamelException;
 import org.apache.camel.spi.Metadata;
+import org.apache.camel.spi.annotations.Component;
 import org.apache.camel.support.component.AbstractApiComponent;
 
-@org.apache.camel.spi.annotations.Component("frappe")
+@Component("frappe")
 public class FrappeComponent extends AbstractApiComponent<FrappeApiName, FrappeConfiguration, FrappeApiCollection> {
 	
 	@Metadata(label = "advanced")
@@ -57,14 +58,14 @@ public class FrappeComponent extends AbstractApiComponent<FrappeApiName, FrappeC
 			}
 			return this.frappeClient;
 		} else {
-			if (endpointConfiguration.getClient() != null) {
+			if (endpointConfiguration.getFrappeClient() != null) {
 				if (endpointConfiguration.getBaseApiUrl() != null || endpointConfiguration.getUsername() != null
 						|| endpointConfiguration.getPassword() != null) {
 					throw new RuntimeCamelException(
 							"Bad Frappe endpoint configuration: client option is mutually exclusive to baseApiUrl, username, password. Either set `client`, or `baseApiUrl` and `username` and `password`");
 				}
 				
-				return endpointConfiguration.getClient();
+				return endpointConfiguration.getFrappeClient();
 			} else {
 				return FrappeClientBuilder.newClient(endpointConfiguration.getBaseApiUrl(),
 						endpointConfiguration.getUsername(), endpointConfiguration.getPassword()).build();

@@ -40,7 +40,7 @@ public class FrappeEndpoint extends AbstractApiEndpoint<FrappeApiName, FrappeCon
 	    this.configuration = endpointConfiguration;
     }
 
-    public Producer createProducer() throws Exception {
+    public Producer createProducer() {
         return new FrappeProducer(this);
     }
 

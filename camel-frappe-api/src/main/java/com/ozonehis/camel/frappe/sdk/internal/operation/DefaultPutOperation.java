@@ -25,8 +25,7 @@ public class DefaultPutOperation extends AbstractResourceOperation  implements P
 	}
 	
 	@Override
-	public PutOperation withName(String name) {
+	public void withName(String name) {
 		this.nameOfResourceToBeUpdated = name;
-		return this;
 	}
 }

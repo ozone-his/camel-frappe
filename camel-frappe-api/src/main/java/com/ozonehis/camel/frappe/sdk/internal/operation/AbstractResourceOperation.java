@@ -19,9 +19,9 @@ public abstract class AbstractResourceOperation extends AbstractOperation<Frappe
 	
 	protected Object resource;
 	
-	public AbstractResourceOperation(String baseApiUrl, String path, OkHttpClient httpClient,
+	public AbstractResourceOperation(String baseApiUrl, String doctype, OkHttpClient httpClient,
 			TransformerFactory transformerFactory, String... pathParams) {
-		super(baseApiUrl, path, httpClient, transformerFactory, pathParams);
+		super(baseApiUrl, doctype, httpClient, transformerFactory, pathParams);
 	}
 	
 	
@@ -51,8 +51,7 @@ public abstract class AbstractResourceOperation extends AbstractOperation<Frappe
 	protected abstract FrappeResponse doResourceExecute(byte[] resourceAsBytes, Request.Builder requestBuilder);
 	
 	@Override
-	public ResourceOperation withResource(Object resource) {
+	public void withResource(Object resource) {
 		this.resource = resource;
-		return this;
 	}
 }

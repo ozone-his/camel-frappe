@@ -10,8 +10,7 @@ public interface ResourceOperation extends ParameterizedOperation<FrappeResponse
 	/**
 	 * This method sets the resource.
 	 *
-	 * @param resource The resource.
-	 * @return The resource operation.
+	 * @param resource The resource to set.
 	 */
-	ResourceOperation withResource( Object resource );
+	void withResource(Object resource);
 }

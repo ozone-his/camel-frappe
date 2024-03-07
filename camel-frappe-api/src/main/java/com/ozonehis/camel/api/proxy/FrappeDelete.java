@@ -13,7 +13,6 @@ public class FrappeDelete extends AbstractFrappeProxy {
 	
 	public InputStream resource(String doctype, String name) {
 		DeleteOperation deleteOperation = frappeClient.delete(doctype);
-		
 		if (name != null) {
 			deleteOperation.withName(name);
 		}

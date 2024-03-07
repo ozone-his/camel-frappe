@@ -30,7 +30,7 @@ public class FrappeEndpointConfigurer extends PropertyConfigurerSupport implemen
         map.put("exchangePattern", org.apache.camel.ExchangePattern.class);
         map.put("pollStrategy", org.apache.camel.spi.PollingConsumerPollStrategy.class);
         map.put("lazyStartProducer", boolean.class);
-        map.put("client", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
+        map.put("frappeClient", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
         map.put("backoffErrorThreshold", int.class);
         map.put("backoffIdleThreshold", int.class);
         map.put("backoffMultiplier", int.class);
@@ -64,12 +64,13 @@ public class FrappeEndpointConfigurer extends PropertyConfigurerSupport implemen
         case "baseApiUrl": target.getConfiguration().setBaseApiUrl(property(camelContext, java.lang.String.class, value)); return true;
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": target.setBridgeErrorHandler(property(camelContext, boolean.class, value)); return true;
-        case "client": target.getConfiguration().setClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "delay": target.setDelay(property(camelContext, long.class, value)); return true;
         case "exceptionhandler":
         case "exceptionHandler": target.setExceptionHandler(property(camelContext, org.apache.camel.spi.ExceptionHandler.class, value)); return true;
         case "exchangepattern":
         case "exchangePattern": target.setExchangePattern(property(camelContext, org.apache.camel.ExchangePattern.class, value)); return true;
+        case "frappeclient":
+        case "frappeClient": target.getConfiguration().setFrappeClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "greedy": target.setGreedy(property(camelContext, boolean.class, value)); return true;
         case "inbody":
         case "inBody": target.setInBody(property(camelContext, java.lang.String.class, value)); return true;
@@ -120,12 +121,13 @@ public class FrappeEndpointConfigurer extends PropertyConfigurerSupport implemen
         case "baseApiUrl": return java.lang.String.class;
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": return boolean.class;
-        case "client": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "delay": return long.class;
         case "exceptionhandler":
         case "exceptionHandler": return org.apache.camel.spi.ExceptionHandler.class;
         case "exchangepattern":
         case "exchangePattern": return org.apache.camel.ExchangePattern.class;
+        case "frappeclient":
+        case "frappeClient": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "greedy": return boolean.class;
         case "inbody":
         case "inBody": return java.lang.String.class;
@@ -172,12 +174,13 @@ public class FrappeEndpointConfigurer extends PropertyConfigurerSupport implemen
         case "baseApiUrl": return target.getConfiguration().getBaseApiUrl();
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": return target.isBridgeErrorHandler();
-        case "client": return target.getConfiguration().getClient();
         case "delay": return target.getDelay();
         case "exceptionhandler":
         case "exceptionHandler": return target.getExceptionHandler();
         case "exchangepattern":
         case "exchangePattern": return target.getExchangePattern();
+        case "frappeclient":
+        case "frappeClient": return target.getConfiguration().getFrappeClient();
         case "greedy": return target.isGreedy();
         case "inbody":
         case "inBody": return target.getInBody();

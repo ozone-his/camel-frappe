@@ -24,8 +24,8 @@ public class FrappeComponentConfigurer extends PropertyConfigurerSupport impleme
         map.put("bridgeErrorHandler", boolean.class);
         map.put("lazyStartProducer", boolean.class);
         map.put("autowiredEnabled", boolean.class);
-        map.put("client", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
         map.put("configuration", com.ozonehis.camel.FrappeConfiguration.class);
+        map.put("frappeClient", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
         map.put("password", java.lang.String.class);
         map.put("username", java.lang.String.class);
         ALL_OPTIONS = map;
@@ -48,8 +48,9 @@ public class FrappeComponentConfigurer extends PropertyConfigurerSupport impleme
         case "baseApiUrl": getOrCreateConfiguration(target).setBaseApiUrl(property(camelContext, java.lang.String.class, value)); return true;
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": target.setBridgeErrorHandler(property(camelContext, boolean.class, value)); return true;
-        case "client": getOrCreateConfiguration(target).setClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "configuration": target.setConfiguration(property(camelContext, com.ozonehis.camel.FrappeConfiguration.class, value)); return true;
+        case "frappeclient":
+        case "frappeClient": getOrCreateConfiguration(target).setFrappeClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "lazystartproducer":
         case "lazyStartProducer": target.setLazyStartProducer(property(camelContext, boolean.class, value)); return true;
         case "password": getOrCreateConfiguration(target).setPassword(property(camelContext, java.lang.String.class, value)); return true;
@@ -72,8 +73,9 @@ public class FrappeComponentConfigurer extends PropertyConfigurerSupport impleme
         case "baseApiUrl": return java.lang.String.class;
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": return boolean.class;
-        case "client": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "configuration": return com.ozonehis.camel.FrappeConfiguration.class;
+        case "frappeclient":
+        case "frappeClient": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "lazystartproducer":
         case "lazyStartProducer": return boolean.class;
         case "password": return java.lang.String.class;
@@ -92,8 +94,9 @@ public class FrappeComponentConfigurer extends PropertyConfigurerSupport impleme
         case "baseApiUrl": return getOrCreateConfiguration(target).getBaseApiUrl();
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": return target.isBridgeErrorHandler();
-        case "client": return getOrCreateConfiguration(target).getClient();
         case "configuration": return target.getConfiguration();
+        case "frappeclient":
+        case "frappeClient": return getOrCreateConfiguration(target).getFrappeClient();
         case "lazystartproducer":
         case "lazyStartProducer": return target.isLazyStartProducer();
         case "password": return getOrCreateConfiguration(target).getPassword();

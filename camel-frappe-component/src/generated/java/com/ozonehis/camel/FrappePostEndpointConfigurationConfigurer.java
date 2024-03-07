@@ -22,11 +22,10 @@ public class FrappePostEndpointConfigurationConfigurer extends org.apache.camel.
         Map<String, Object> map = new CaseInsensitiveMap();
         map.put("ApiName", com.ozonehis.camel.internal.FrappeApiName.class);
         map.put("BaseApiUrl", java.lang.String.class);
-        map.put("Client", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
         map.put("Doctype", java.lang.String.class);
+        map.put("FrappeClient", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
         map.put("MethodName", java.lang.String.class);
         map.put("Password", java.lang.String.class);
-        map.put("QueryParams", java.util.Map.class);
         map.put("Resource", java.lang.Object.class);
         map.put("Username", java.lang.String.class);
         ALL_OPTIONS = map;
@@ -40,16 +39,14 @@ public class FrappePostEndpointConfigurationConfigurer extends org.apache.camel.
         case "ApiName": target.setApiName(property(camelContext, com.ozonehis.camel.internal.FrappeApiName.class, value)); return true;
         case "baseapiurl":
         case "BaseApiUrl": target.setBaseApiUrl(property(camelContext, java.lang.String.class, value)); return true;
-        case "client":
-        case "Client": target.setClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "doctype":
         case "Doctype": target.setDoctype(property(camelContext, java.lang.String.class, value)); return true;
+        case "frappeclient":
+        case "FrappeClient": target.setFrappeClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "methodname":
         case "MethodName": target.setMethodName(property(camelContext, java.lang.String.class, value)); return true;
         case "password":
         case "Password": target.setPassword(property(camelContext, java.lang.String.class, value)); return true;
-        case "queryparams":
-        case "QueryParams": target.setQueryParams(property(camelContext, java.util.Map.class, value)); return true;
         case "resource":
         case "Resource": target.setResource(property(camelContext, java.lang.Object.class, value)); return true;
         case "username":
@@ -70,16 +67,14 @@ public class FrappePostEndpointConfigurationConfigurer extends org.apache.camel.
         case "ApiName": return com.ozonehis.camel.internal.FrappeApiName.class;
         case "baseapiurl":
         case "BaseApiUrl": return java.lang.String.class;
-        case "client":
-        case "Client": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "doctype":
         case "Doctype": return java.lang.String.class;
+        case "frappeclient":
+        case "FrappeClient": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "methodname":
         case "MethodName": return java.lang.String.class;
         case "password":
         case "Password": return java.lang.String.class;
-        case "queryparams":
-        case "QueryParams": return java.util.Map.class;
         case "resource":
         case "Resource": return java.lang.Object.class;
         case "username":
@@ -96,29 +91,18 @@ public class FrappePostEndpointConfigurationConfigurer extends org.apache.camel.
         case "ApiName": return target.getApiName();
         case "baseapiurl":
         case "BaseApiUrl": return target.getBaseApiUrl();
-        case "client":
-        case "Client": return target.getClient();
         case "doctype":
         case "Doctype": return target.getDoctype();
+        case "frappeclient":
+        case "FrappeClient": return target.getFrappeClient();
         case "methodname":
         case "MethodName": return target.getMethodName();
         case "password":
         case "Password": return target.getPassword();
-        case "queryparams":
-        case "QueryParams": return target.getQueryParams();
         case "resource":
         case "Resource": return target.getResource();
         case "username":
         case "Username": return target.getUsername();
-        default: return null;
-        }
-    }
-
-    @Override
-    public Object getCollectionValueType(Object target, String name, boolean ignoreCase) {
-        switch (ignoreCase ? name.toLowerCase() : name) {
-        case "queryparams":
-        case "QueryParams": return java.lang.Object.class;
         default: return null;
         }
     }
