@@ -29,7 +29,7 @@ public class FrappeClientBuilder {
 	private TransformerFactory transformerFactory = new JacksonTransformerFactory();
 	
 	private FrappeClientBuilder(String baseApiUrl, FrappeAuthentication authentication) {
-		this.baseApiUrl = baseApiUrl.trim();
+		this.baseApiUrl = baseApiUrl != null ? baseApiUrl.trim() : null;
 		this.authentication = authentication;
 	}
 	
@@ -78,9 +78,8 @@ public class FrappeClientBuilder {
 	
 	public DefaultFrappeClient build() {
 		StringBuilder baseApiPath = new StringBuilder();
-		baseApiPath.append( baseApiUrl );
-		if ( !baseApiUrl.endsWith( "/" ) )
-		{
+		baseApiPath.append(this.baseApiUrl);
+		if ( !baseApiUrl.endsWith( "/" ) ) {
 			baseApiPath.append( "/" );
 		}
 		

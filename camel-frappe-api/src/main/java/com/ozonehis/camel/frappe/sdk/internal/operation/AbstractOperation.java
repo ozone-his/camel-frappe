@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
@@ -39,12 +40,22 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 			String... pathParams) {
 		this.baseApiUrl = baseApiUrl;
 		this.path = path;
-		this.url = (baseApiUrl.endsWith("/") ? baseApiUrl : baseApiUrl + "/") + (path != null && path.startsWith("/") ?
-				path.substring(1) :
-				path);
+		this.url = buildUrl(baseApiUrl) + (path != null && path.startsWith("/") ?
+				path.substring(1) : path);
 		this.httpClient = httpClient;
 		this.transformerFactory = transformerFactory;
 		this.pathParams = pathParams;
+	}
+	
+	private String buildUrl(String baseApiUrl) {
+		StringBuilder urlBuilder = new StringBuilder(baseApiUrl);
+		if (!baseApiUrl.endsWith("/")) {
+			urlBuilder.append("/");
+		}
+		if (!baseApiUrl.endsWith("api/resource/")) {
+			urlBuilder.append("api/resource/");
+		}
+		return urlBuilder.toString();
 	}
 	
 	@Override
@@ -102,8 +113,9 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 				}
 			} catch (IOException e) {
 				throw new FrappeClientException("Failed to read response body", e);
+			} finally {
+				Objects.requireNonNull(response.body()).close();
 			}
-			response.close();
 			throw new RemoteFrappeClientException(response.toString(), response.code(), body);
 		} else {
 			return response;

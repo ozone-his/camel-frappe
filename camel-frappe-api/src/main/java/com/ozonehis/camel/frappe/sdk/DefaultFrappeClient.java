@@ -2,11 +2,11 @@ package com.ozonehis.camel.frappe.sdk;
 
 import com.ozonehis.camel.frappe.sdk.api.FrappeClient;
 import com.ozonehis.camel.frappe.sdk.api.operation.DeleteOperation;
+import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
+import com.ozonehis.camel.frappe.sdk.api.operation.PostOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.PutOperation;
-import com.ozonehis.camel.frappe.sdk.api.operation.ResourceOperation;
 import com.ozonehis.camel.frappe.sdk.api.security.FrappeAuthentication;
 import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
-import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultDeleteOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultGetOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPostOperation;
@@ -21,7 +21,7 @@ public class DefaultFrappeClient implements FrappeClient {
 	
 	private final OkHttpClient httpClient;
 	
-	private final String baseApiUrl;
+	private String baseApiUrl;
 	
 	private final TransformerFactory transformerFactory;
 	
@@ -48,8 +48,8 @@ public class DefaultFrappeClient implements FrappeClient {
 	}
 	
 	@Override
-	public ResourceOperation post(String doctype, String... pathParams) {
-		return new DefaultPostOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory(), pathParams);
+	public PostOperation post(String doctype) {
+		return new DefaultPostOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory());
 	}
 	
 	@Override
@@ -75,5 +75,10 @@ public class DefaultFrappeClient implements FrappeClient {
 	@Override
 	public TransformerFactory getTransformerFactory() {
 		return this.transformerFactory;
+	}
+	
+	@Override
+	public void setBaseUrl(String url) {
+		this.baseApiUrl = url;
 	}
 }

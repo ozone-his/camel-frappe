@@ -23,8 +23,7 @@ public enum FrappePostApiMethod implements ApiMethod {
         java.io.InputStream.class,
         "resource",
         arg("doctype", String.class),
-        arg("resource", Object.class),
-        arg("queryParams", java.util.Map.class));
+        arg("resource", Object.class));
 
     private final ApiMethod apiMethod;
 

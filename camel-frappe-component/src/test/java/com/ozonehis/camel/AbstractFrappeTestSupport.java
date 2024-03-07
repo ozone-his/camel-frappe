@@ -40,7 +40,7 @@ public abstract class AbstractFrappeTestSupport extends CamelTestSupport {
     protected CamelContext createCamelContext() throws Exception {
         final CamelContext context = super.createCamelContext();
         final FrappeConfiguration configuration = new FrappeConfiguration();
-        configuration.setClient(getFrappeClient());
+        configuration.setFrappeClient(getFrappeClient());
         // add FrappeComponent to Camel context
         final FrappeComponent component = new FrappeComponent(context);
         component.setConfiguration(configuration);

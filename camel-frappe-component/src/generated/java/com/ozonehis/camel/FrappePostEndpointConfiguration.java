@@ -15,16 +15,13 @@ import org.apache.camel.spi.UriParams;
  */
 @ApiParams(apiName = "post", 
            description = "",
-           apiMethods = {@ApiMethod(methodName = "resource", signatures={"java.io.InputStream resource(String doctype, Object resource, java.util.Map<String, Object> queryParams)"})}, aliases = {})
+           apiMethods = {@ApiMethod(methodName = "resource", signatures={"java.io.InputStream resource(String doctype, Object resource)"})}, aliases = {})
 @UriParams
 @Configurer(extended = true)
 public final class FrappePostEndpointConfiguration extends FrappeConfiguration {
     @UriParam
     @ApiParam(optional = false, apiMethods = {@ApiMethod(methodName = "resource")})
     private String doctype;
-    @UriParam
-    @ApiParam(optional = true, apiMethods = {@ApiMethod(methodName = "resource")})
-    private java.util.Map<String, Object> queryParams;
     @UriParam
     @ApiParam(optional = false, apiMethods = {@ApiMethod(methodName = "resource")})
     private Object resource;
@@ -35,14 +32,6 @@ public final class FrappePostEndpointConfiguration extends FrappeConfiguration {
 
     public void setDoctype(String doctype) {
         this.doctype = doctype;
-    }
-
-    public java.util.Map<String, Object> getQueryParams() {
-        return queryParams;
-    }
-
-    public void setQueryParams(java.util.Map<String, Object> queryParams) {
-        this.queryParams = queryParams;
     }
 
     public Object getResource() {

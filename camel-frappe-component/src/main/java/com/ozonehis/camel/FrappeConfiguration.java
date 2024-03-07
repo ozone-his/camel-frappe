@@ -3,15 +3,18 @@ package com.ozonehis.camel;
 import com.ozonehis.camel.frappe.sdk.api.FrappeClient;
 import com.ozonehis.camel.internal.FrappeApiName;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.camel.spi.Configurer;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriParams;
 import org.apache.camel.spi.UriPath;
 
-@Data
+@Getter
+@Setter
 @UriParams
-@Configurer
+@Configurer(extended = true)
 public class FrappeConfiguration {
     
     @UriParam(description = "Base URL of the Frappe instance(Or implementation of frappe e.g ERPNext)")
@@ -33,6 +36,6 @@ public class FrappeConfiguration {
     
     @UriParam(label = "advanced",
             description = "References a user-defined com.ozonehis.camel.frappe.sdk.api.FrappeClient. This option is mutually exclusive to the baseApiUrl, username, password, and personalAccessToken options")
-    private FrappeClient client;
+    private FrappeClient frappeClient;
 
 }

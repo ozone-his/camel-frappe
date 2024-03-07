@@ -118,9 +118,6 @@
                   <apiName>post</apiName>
                   <proxyClass>com.ozonehis.camel.api.proxy.FrappePost</proxyClass>
                   <fromJavasource />
-                  <nullableOptions>
-                    <nullableOption>queryParams</nullableOption>
-                  </nullableOptions>
                 </api>
                 <api>
                   <apiName>put</apiName>

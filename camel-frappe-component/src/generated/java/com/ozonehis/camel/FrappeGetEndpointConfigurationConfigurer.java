@@ -22,10 +22,10 @@ public class FrappeGetEndpointConfigurationConfigurer extends org.apache.camel.s
         Map<String, Object> map = new CaseInsensitiveMap();
         map.put("ApiName", com.ozonehis.camel.internal.FrappeApiName.class);
         map.put("BaseApiUrl", java.lang.String.class);
-        map.put("Client", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
         map.put("Doctype", java.lang.String.class);
         map.put("Fields", java.util.List.class);
         map.put("Filters", java.util.List.class);
+        map.put("FrappeClient", com.ozonehis.camel.frappe.sdk.api.FrappeClient.class);
         map.put("MethodName", java.lang.String.class);
         map.put("Password", java.lang.String.class);
         map.put("QueryParams", java.util.Map.class);
@@ -41,14 +41,14 @@ public class FrappeGetEndpointConfigurationConfigurer extends org.apache.camel.s
         case "ApiName": target.setApiName(property(camelContext, com.ozonehis.camel.internal.FrappeApiName.class, value)); return true;
         case "baseapiurl":
         case "BaseApiUrl": target.setBaseApiUrl(property(camelContext, java.lang.String.class, value)); return true;
-        case "client":
-        case "Client": target.setClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "doctype":
         case "Doctype": target.setDoctype(property(camelContext, java.lang.String.class, value)); return true;
         case "fields":
         case "Fields": target.setFields(property(camelContext, java.util.List.class, value)); return true;
         case "filters":
         case "Filters": target.setFilters(property(camelContext, java.util.List.class, value)); return true;
+        case "frappeclient":
+        case "FrappeClient": target.setFrappeClient(property(camelContext, com.ozonehis.camel.frappe.sdk.api.FrappeClient.class, value)); return true;
         case "methodname":
         case "MethodName": target.setMethodName(property(camelContext, java.lang.String.class, value)); return true;
         case "password":
@@ -73,14 +73,14 @@ public class FrappeGetEndpointConfigurationConfigurer extends org.apache.camel.s
         case "ApiName": return com.ozonehis.camel.internal.FrappeApiName.class;
         case "baseapiurl":
         case "BaseApiUrl": return java.lang.String.class;
-        case "client":
-        case "Client": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "doctype":
         case "Doctype": return java.lang.String.class;
         case "fields":
         case "Fields": return java.util.List.class;
         case "filters":
         case "Filters": return java.util.List.class;
+        case "frappeclient":
+        case "FrappeClient": return com.ozonehis.camel.frappe.sdk.api.FrappeClient.class;
         case "methodname":
         case "MethodName": return java.lang.String.class;
         case "password":
@@ -101,14 +101,14 @@ public class FrappeGetEndpointConfigurationConfigurer extends org.apache.camel.s
         case "ApiName": return target.getApiName();
         case "baseapiurl":
         case "BaseApiUrl": return target.getBaseApiUrl();
-        case "client":
-        case "Client": return target.getClient();
         case "doctype":
         case "Doctype": return target.getDoctype();
         case "fields":
         case "Fields": return target.getFields();
         case "filters":
         case "Filters": return target.getFilters();
+        case "frappeclient":
+        case "FrappeClient": return target.getFrappeClient();
         case "methodname":
         case "MethodName": return target.getMethodName();
         case "password":

@@ -9,5 +9,4 @@ public abstract class AbstractFrappeProxy {
 	public AbstractFrappeProxy(FrappeClient frappeClient) {
 		this.frappeClient = frappeClient;
 	}
-	
 }

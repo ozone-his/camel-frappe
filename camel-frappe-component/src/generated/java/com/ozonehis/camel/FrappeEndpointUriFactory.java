@@ -28,13 +28,13 @@ public class FrappeEndpointUriFactory extends org.apache.camel.support.component
         props.add("backoffMultiplier");
         props.add("baseApiUrl");
         props.add("bridgeErrorHandler");
-        props.add("client");
         props.add("delay");
         props.add("doctype");
         props.add("exceptionHandler");
         props.add("exchangePattern");
         props.add("fields");
         props.add("filters");
+        props.add("frappeClient");
         props.add("greedy");
         props.add("inBody");
         props.add("initialDelay");
