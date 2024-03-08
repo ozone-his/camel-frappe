@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-class BasicAuthenticationTest {
+class FrappeBasicAuthenticationTest {
 
     @Mock
     private Request request;
 
-    private BasicAuthentication basicAuthentication;
+    private FrappeBasicAuthentication frappeBasicAuthentication;
     
     private static AutoCloseable mocksCloser;
 
@@ -25,7 +25,7 @@ class BasicAuthenticationTest {
     void setUp() {
         mocksCloser = openMocks(this);
         when(request.url()).thenReturn(HttpUrl.get("http://localhost:8080"));
-        basicAuthentication = new BasicAuthentication("username", "password");
+        frappeBasicAuthentication = new FrappeBasicAuthentication("username", "password");
     }
     
     @AfterAll
@@ -37,6 +37,6 @@ class BasicAuthenticationTest {
     @DisplayName("getBaseUrl should return correct base url")
     void getBaseUrlShouldReturnCorrectBaseUrl() {
         when(request.url()).thenReturn(HttpUrl.get("http://localhost:8080"));
-        assertEquals("http://localhost:8080", basicAuthentication.getBaseUrl(request));
+        assertEquals("http://localhost:8080", frappeBasicAuthentication.getBaseUrl(request));
     }
 }
