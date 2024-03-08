@@ -1,9 +1,8 @@
 package com.ozonehis.camel.internal;
 
+import com.ozonehis.camel.FrappeConfiguration;
 import org.apache.camel.CamelContext;
 import org.apache.camel.support.component.ApiMethodPropertiesHelper;
-
-import com.ozonehis.camel.FrappeConfiguration;
 
 /**
  * Singleton {@link ApiMethodPropertiesHelper} for Frappe component.

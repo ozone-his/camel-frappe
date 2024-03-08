@@ -5,13 +5,13 @@ import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
 /**
  * This interface represents a resource operation e.g. a GET, POST, PUT, DELETE operation.
  */
-public interface ResourceOperation extends ParameterizedOperation<FrappeResponse>{
-	
-	/**
-	 * This method sets the resource.
-	 *
-	 * @param resource The resource to set.
-	 * @param <R> The resource type.
-	 */
-	<R> void withResource(R resource);
+public interface ResourceOperation extends ParameterizedOperation<FrappeResponse> {
+
+    /**
+     * This method sets the resource.
+     *
+     * @param resource The resource to set.
+     * @param <R> The resource type.
+     */
+    <R> void withResource(R resource);
 }

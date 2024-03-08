@@ -1,9 +1,8 @@
 package com.ozonehis.camel;
 
-import org.apache.camel.support.component.AbstractApiProducer;
-
 import com.ozonehis.camel.internal.FrappeApiName;
 import com.ozonehis.camel.internal.FrappePropertiesHelper;
+import org.apache.camel.support.component.AbstractApiProducer;
 
 public class FrappeProducer extends AbstractApiProducer<FrappeApiName, FrappeConfiguration> {
 
