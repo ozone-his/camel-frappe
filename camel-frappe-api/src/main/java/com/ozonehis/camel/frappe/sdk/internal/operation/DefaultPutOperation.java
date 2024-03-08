@@ -4,10 +4,12 @@ import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
 import com.ozonehis.camel.frappe.sdk.api.operation.PutOperation;
 import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import com.ozonehis.camel.frappe.sdk.internal.DefaultFrappeResponse;
+import lombok.Getter;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+@Getter
 public class DefaultPutOperation extends AbstractResourceOperation implements PutOperation {
 
     private String nameOfResourceToBeUpdated;

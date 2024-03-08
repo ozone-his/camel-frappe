@@ -21,8 +21,10 @@ public class InMemoryCookieJar implements CookieJar {
 
     @Override
     public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> cookies) {
-        this.cookiesCache.removeAll(cookies.stream().map(WrappedCookie::new).toList());
-        this.cookiesCache.addAll(cookies.stream().map(WrappedCookie::new).toList());
+        List<WrappedCookie> wrappedCookies =
+                cookies.stream().map(WrappedCookie::new).toList();
+        this.cookiesCache.removeAll(wrappedCookies);
+        this.cookiesCache.addAll(wrappedCookies);
     }
 
     @Synchronized

@@ -44,6 +44,11 @@ public record DefaultFrappeResponse(Response response, Transformer transformer) 
     }
 
     @Override
+    public String message() {
+        return response.message();
+    }
+
+    @Override
     public ResponseBody responseBody() {
         return response.body();
     }
