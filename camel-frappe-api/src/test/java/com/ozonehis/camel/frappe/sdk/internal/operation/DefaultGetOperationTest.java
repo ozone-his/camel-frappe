@@ -1,6 +1,6 @@
 package com.ozonehis.camel.frappe.sdk.internal.operation;
 
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,7 +28,7 @@ class DefaultGetOperationTest {
     private OkHttpClient httpClient;
 
     @Mock
-    private TransformerFactory transformerFactory;
+    private Transformer transformer;
     
     @Mock
     private Call call;
@@ -49,7 +49,7 @@ class DefaultGetOperationTest {
         responseBuilder.protocol(okhttp3.Protocol.HTTP_1_1);
         when(call.execute()).thenReturn(responseBuilder.build());
         
-        defaultGetOperation = new DefaultGetOperation("http://localhost", "/path", httpClient, transformerFactory, "param");
+        defaultGetOperation = new DefaultGetOperation("http://localhost", "/path", httpClient, transformer, "param");
     }
     
     @AfterAll
@@ -61,7 +61,7 @@ class DefaultGetOperationTest {
     @Test
     @DisplayName("execute should throw IllegalArgumentException when URL is invalid")
     void executeShouldThrowIllegalArgumentExceptionWhenUrlIsInvalid() {
-        defaultGetOperation = new DefaultGetOperation("", "/path", httpClient, transformerFactory, "param");
+        defaultGetOperation = new DefaultGetOperation("", "/path", httpClient, transformer, "param");
         assertThrows(IllegalArgumentException.class, defaultGetOperation::execute);
     }
 

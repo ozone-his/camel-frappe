@@ -1,5 +1,8 @@
 package com.ozonehis.camel.frappe.sdk.api;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import okhttp3.ResponseBody;
+
 import java.io.Closeable;
 import java.io.InputStream;
 
@@ -11,10 +14,18 @@ public interface FrappeResponse extends Closeable {
 	/**
 	 * This method returns the response as the specified type.
 	 *
-	 * @param responseType The type of the response.
+	 * @param returnType The type of the response.
 	 * @return The response as the specified type.
 	 */
-	<T> T returnAs( Class<T> responseType );
+	<T> T returnAs(Class<T> returnType);
+	
+	/**
+	 * This method returns the response as the specified type.
+	 *
+	 * @param typeReference The type of the response.
+	 * @return The response as the specified type.
+	 */
+	<T> T returnAs(TypeReference<T> typeReference);
 	
 	
 	/**
@@ -28,4 +39,16 @@ public interface FrappeResponse extends Closeable {
 	 * @return The URL of the response.
 	 */
 	String getUrl();
+	
+	/**
+	 * This method returns the response code.
+	 * @return The response code.
+	 */
+	int code();
+	
+	/**
+	 * This method returns the response body.
+	 * @return The response body.
+	 */
+	ResponseBody responseBody();
 }

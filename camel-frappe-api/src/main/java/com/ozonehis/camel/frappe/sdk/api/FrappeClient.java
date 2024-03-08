@@ -4,7 +4,7 @@ import com.ozonehis.camel.frappe.sdk.api.operation.DeleteOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.PostOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.PutOperation;
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import okhttp3.OkHttpClient;
 
 /**
@@ -28,6 +28,16 @@ public interface FrappeClient {
 	 * @return The POST operation.
 	 */
 	PostOperation post(String doctype);
+	
+	/**
+	 * This method creates a POST operation.
+	 *
+	 * @param doctype The doctype.
+	 * @param resource The resource.
+	 * @param <R> The resource type.
+	 * @return The POST operation.
+	 */
+	<R> PostOperation post(String doctype, R resource);
 	
 	/**
 	 * This method creates a PUT operation.
@@ -60,11 +70,11 @@ public interface FrappeClient {
 	String getBaseApiUrl();
 	
 	/**
-	 * This method gets the transformer factory.
+	 * This method gets the transformer.
 	 *
-	 * @return The transformer factory.
+	 * @return The transformer.
 	 */
-	TransformerFactory getTransformerFactory();
+	Transformer getTransformer();
 	
 	/**
 	 * This method sets the base URL.

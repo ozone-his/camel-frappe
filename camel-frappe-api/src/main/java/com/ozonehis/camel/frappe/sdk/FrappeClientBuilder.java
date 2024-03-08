@@ -1,9 +1,9 @@
 package com.ozonehis.camel.frappe.sdk;
 
 import com.ozonehis.camel.frappe.sdk.api.security.FrappeAuthentication;
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import com.ozonehis.camel.frappe.sdk.internal.security.BasicAuthentication;
-import com.ozonehis.camel.frappe.sdk.internal.transformer.JacksonTransformerFactory;
+import com.ozonehis.camel.frappe.sdk.internal.transformer.JacksonTransformer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +26,7 @@ public class FrappeClientBuilder {
 	private long connectTimeoutMs = 10000;
 	
 	// Set default transformer factory to JacksonTransformerFactory
-	private TransformerFactory transformerFactory = new JacksonTransformerFactory();
+	private Transformer transformer = new JacksonTransformer();
 	
 	private FrappeClientBuilder(String baseApiUrl, FrappeAuthentication authentication) {
 		this.baseApiUrl = baseApiUrl != null ? baseApiUrl.trim() : null;
@@ -71,8 +71,8 @@ public class FrappeClientBuilder {
 		return this;
 	}
 	
-	public FrappeClientBuilder withTransformerFactory(TransformerFactory transformerFactory) {
-		this.transformerFactory = transformerFactory;
+	public FrappeClientBuilder withTransformer(Transformer transformer) {
+		this.transformer = transformer;
 		return this;
 	}
 	
@@ -83,7 +83,7 @@ public class FrappeClientBuilder {
 			baseApiPath.append( "/" );
 		}
 		
-		return new DefaultFrappeClient(baseApiPath.toString(), authentication, transformerFactory,
+		return new DefaultFrappeClient(baseApiPath.toString(), authentication, transformer,
 				maxIdleConnections, keepAliveDurationMs, callTimeoutMs, readTimeoutMs, writeTimeoutMs, connectTimeoutMs);
 	}
 }

@@ -1,20 +1,17 @@
 package com.ozonehis.camel.frappe.sdk.internal.operation;
 
 import com.ozonehis.camel.frappe.sdk.api.FrappeClientException;
-import com.ozonehis.camel.frappe.sdk.api.RemoteFrappeClientException;
 import com.ozonehis.camel.frappe.sdk.api.operation.ParameterizedOperation;
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
@@ -26,7 +23,7 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 	
 	protected final OkHttpClient httpClient;
 	
-	protected final TransformerFactory transformerFactory;
+	protected final Transformer transformer;
 	
 	protected final Map<String, List<String>> queryParams = new HashMap<>();
 	
@@ -34,16 +31,17 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 	
 	protected final String[] pathParams;
 	
-	protected final String path;
+	protected final String doctype;
 	
-	public AbstractOperation(String baseApiUrl, String path, OkHttpClient httpClient, TransformerFactory transformerFactory,
+	public AbstractOperation(String baseApiUrl, String doctype, OkHttpClient httpClient,
+			Transformer transformer,
 			String... pathParams) {
 		this.baseApiUrl = baseApiUrl;
-		this.path = path;
-		this.url = buildUrl(baseApiUrl) + (path != null && path.startsWith("/") ?
-				path.substring(1) : path);
+		this.doctype = doctype;
+		this.url = buildUrl(baseApiUrl) + (doctype != null && doctype.startsWith("/") ?
+				doctype.substring(1) : doctype);
 		this.httpClient = httpClient;
-		this.transformerFactory = transformerFactory;
+		this.transformer = transformer;
 		this.pathParams = pathParams;
 	}
 	
@@ -52,8 +50,9 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 		if (!baseApiUrl.endsWith("/")) {
 			urlBuilder.append("/");
 		}
-		if (!baseApiUrl.endsWith("api/resource/")) {
-			urlBuilder.append("api/resource/");
+		// TODO: Add proper support for resource and method paths. Now just support resource paths
+		if (!baseApiUrl.endsWith("resource/")) {
+			urlBuilder.append("resource/");
 		}
 		return urlBuilder.toString();
 	}
@@ -79,6 +78,13 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 			throw new IllegalArgumentException("Invalid URL: " + url);
 		}
 		
+		// Add path parameters
+		if (pathParams != null) {
+			for (String pathParam : pathParams) {
+				httpUrl = httpUrl.newBuilder().addPathSegment(pathParam).build();
+			}
+		}
+		
 		HttpUrl.Builder httpUrlBuilder = httpUrl.newBuilder();
 		queryParams.forEach((name, values) -> values.forEach(value -> httpUrlBuilder.addQueryParameter(name, value)));
 		
@@ -98,27 +104,10 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 	}
 	
 	protected Response onHttpResponse(Callable<Response> callable) {
-		Response response;
 		try {
-			response = callable.call();
+			return  callable.call();
 		} catch (Exception e) {
 			throw new FrappeClientException(e);
-		}
-		
-		if (!response.isSuccessful()) {
-			String body = null;
-			try {
-				if (response.body() != null) {
-					body = response.body().string();
-				}
-			} catch (IOException e) {
-				throw new FrappeClientException("Failed to read response body", e);
-			} finally {
-				Objects.requireNonNull(response.body()).close();
-			}
-			throw new RemoteFrappeClientException(response.toString(), response.code(), body);
-		} else {
-			return response;
 		}
 	}
 }
