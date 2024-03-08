@@ -1,16 +1,29 @@
 package com.ozonehis.camel.frappe.sdk.internal;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import java.io.InputStream;
 
-public record DefaultFrappeResponse(Response response, TransformerFactory transformerFactory) implements FrappeResponse {
+public record DefaultFrappeResponse(Response response, Transformer transformer) implements FrappeResponse {
 	
 	@Override
-	public <T> T returnAs(Class<T> responseType) {
-		return transformerFactory.createResponseTransformer(responseType).transform(response.body());
+	public <T> T returnAs(Class<T> returnType) {
+		if (response.body() == null) {
+			return null;
+		}
+		return transformer.transform(response.body().byteStream(), returnType);
+	}
+	
+	@Override
+	public <T> T returnAs(TypeReference<T> typeReference) {
+		if (response.body() == null) {
+			return null;
+		}
+		return transformer.transform(response.body().byteStream(), typeReference);
 	}
 	
 	@Override
@@ -24,6 +37,16 @@ public record DefaultFrappeResponse(Response response, TransformerFactory transf
 	@Override
 	public String getUrl() {
 		return response.request().url().toString();
+	}
+	
+	@Override
+	public int code() {
+		return response.code();
+	}
+	
+	@Override
+	public ResponseBody responseBody() {
+		return response.body();
 	}
 	
 	@Override

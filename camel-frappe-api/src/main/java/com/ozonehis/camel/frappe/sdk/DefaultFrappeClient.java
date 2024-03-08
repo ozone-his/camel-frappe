@@ -6,7 +6,7 @@ import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.PostOperation;
 import com.ozonehis.camel.frappe.sdk.api.operation.PutOperation;
 import com.ozonehis.camel.frappe.sdk.api.security.FrappeAuthentication;
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultDeleteOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultGetOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPostOperation;
@@ -23,9 +23,9 @@ public class DefaultFrappeClient implements FrappeClient {
 	
 	private String baseApiUrl;
 	
-	private final TransformerFactory transformerFactory;
+	private final Transformer transformer;
 	
-	public DefaultFrappeClient(String baseApiUrl, FrappeAuthentication authentication, TransformerFactory transformerFactory,
+	public DefaultFrappeClient(String baseApiUrl, FrappeAuthentication authentication, Transformer transformer,
 			int maxIdleConnections, long keepAliveDuration, long callTimeout, long readTimeout, long writeTimeout,
 			long connectTimeout) {
 		InMemoryCookieJar inMemoryCookieJar = new InMemoryCookieJar();
@@ -39,27 +39,34 @@ public class DefaultFrappeClient implements FrappeClient {
 		
 		this.httpClient = httpClientBuilder.build();
 		this.baseApiUrl = baseApiUrl;
-		this.transformerFactory = transformerFactory;
+		this.transformer = transformer;
 	}
 	
 	@Override
 	public GetOperation get(String doctype, String... pathParams) {
-		return new DefaultGetOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory(), pathParams);
+		return new DefaultGetOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformer(), pathParams);
 	}
 	
 	@Override
 	public PostOperation post(String doctype) {
-		return new DefaultPostOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory());
+		return new DefaultPostOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformer());
+	}
+	
+	@Override
+	public <R> PostOperation post(String doctype, R resource) {
+		PostOperation postOperation = new DefaultPostOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformer());
+		postOperation.withResource(resource);
+		return postOperation;
 	}
 	
 	@Override
 	public PutOperation put(String doctype) {
-		return new DefaultPutOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory());
+		return new DefaultPutOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformer());
 	}
 	
 	@Override
 	public DeleteOperation delete(String doctype) {
-		return new DefaultDeleteOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformerFactory());
+		return new DefaultDeleteOperation(getBaseApiUrl(), doctype, getHttpClient(), getTransformer());
 	}
 	
 	@Override
@@ -73,8 +80,8 @@ public class DefaultFrappeClient implements FrappeClient {
 	}
 	
 	@Override
-	public TransformerFactory getTransformerFactory() {
-		return this.transformerFactory;
+	public Transformer getTransformer() {
+		return this.transformer;
 	}
 	
 	@Override

@@ -2,7 +2,7 @@ package com.ozonehis.camel.frappe.sdk.internal.operation;
 
 import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
 import com.ozonehis.camel.frappe.sdk.api.operation.ResourceOperation;
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
- * Abstract class for resource operations. It provides a resource field and a doResourceExecute method.
+ * Abstract class for resource operations.
  */
 @Slf4j
 public abstract class AbstractResourceOperation extends AbstractOperation<FrappeResponse> implements ResourceOperation {
@@ -20,8 +20,8 @@ public abstract class AbstractResourceOperation extends AbstractOperation<Frappe
 	protected Object resource;
 	
 	public AbstractResourceOperation(String baseApiUrl, String doctype, OkHttpClient httpClient,
-			TransformerFactory transformerFactory, String... pathParams) {
-		super(baseApiUrl, doctype, httpClient, transformerFactory, pathParams);
+			Transformer transformer, String... pathParams) {
+		super(baseApiUrl, doctype, httpClient, transformer, pathParams);
 	}
 	
 	
@@ -34,15 +34,13 @@ public abstract class AbstractResourceOperation extends AbstractOperation<Frappe
 		return doResourceExecute(bytes, requestBuilder);
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected byte[] transformResourceToBytes(Object resource) {
 		return Optional.ofNullable(resource)
 				.map(res -> {
 					if (res instanceof String) {
 						return ((String) res).getBytes(StandardCharsets.UTF_8);
 					} else {
-						return transformerFactory.createRequestTransformer((Class) res.getClass()).transform(res)
-								.getBytes(StandardCharsets.UTF_8);
+						return transformer.transform(res).getBytes(StandardCharsets.UTF_8);
 					}
 				})
 				.orElse(new byte[]{});
@@ -51,7 +49,7 @@ public abstract class AbstractResourceOperation extends AbstractOperation<Frappe
 	protected abstract FrappeResponse doResourceExecute(byte[] resourceAsBytes, Request.Builder requestBuilder);
 	
 	@Override
-	public void withResource(Object resource) {
+	public <R> void withResource(R resource) {
 		this.resource = resource;
 	}
 }

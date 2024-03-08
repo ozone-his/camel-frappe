@@ -2,7 +2,7 @@ package com.ozonehis.camel.frappe.sdk.internal.operation;
 
 import com.ozonehis.camel.frappe.sdk.api.FrappeResponse;
 import com.ozonehis.camel.frappe.sdk.api.operation.GetOperation;
-import com.ozonehis.camel.frappe.sdk.api.transformer.TransformerFactory;
+import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import com.ozonehis.camel.frappe.sdk.internal.DefaultFrappeResponse;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
@@ -20,8 +20,8 @@ public class DefaultGetOperation extends AbstractOperation<FrappeResponse> imple
 	protected List<List<String>> filters = new ArrayList<>();
 	
 	public DefaultGetOperation(String baseApiUrl, String path, OkHttpClient httpClient,
-			TransformerFactory transformerFactory, String... pathParams) {
-		super(baseApiUrl, path, httpClient, transformerFactory, pathParams);
+			Transformer transformer, String... pathParams) {
+		super(baseApiUrl, path, httpClient, transformer, pathParams);
 	}
 	
 	@Override
@@ -46,7 +46,7 @@ public class DefaultGetOperation extends AbstractOperation<FrappeResponse> imple
 		okhttp3.Response response = onHttpResponse(
 				() -> httpClient.newCall(new Request.Builder().url(httpUrlBuilder.build()).get().build()).execute());
 		
-		return new DefaultFrappeResponse(response, transformerFactory);
+		return new DefaultFrappeResponse(response, transformer);
 	}
 	
 	@Override
