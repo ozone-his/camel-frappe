@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-public class BasicAuthentication implements FrappeAuthentication {
+public class FrappeBasicAuthentication implements FrappeAuthentication {
 	
 	private final String username;
 	
 	private final String password;
 	
-	public BasicAuthentication(String username, String password) {
+	public FrappeBasicAuthentication(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
