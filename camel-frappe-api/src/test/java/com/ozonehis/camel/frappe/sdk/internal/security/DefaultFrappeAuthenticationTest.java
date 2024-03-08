@@ -12,12 +12,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-class FrappeBasicAuthenticationTest {
+class DefaultFrappeAuthenticationTest {
 
     @Mock
     private Request request;
 
-    private FrappeBasicAuthentication frappeBasicAuthentication;
+    private DefaultFrappeAuthentication defaultFrappeAuthentication;
 
     private static AutoCloseable mocksCloser;
 
@@ -25,7 +25,7 @@ class FrappeBasicAuthenticationTest {
     void setUp() {
         mocksCloser = openMocks(this);
         when(request.url()).thenReturn(HttpUrl.get("http://localhost:8080"));
-        frappeBasicAuthentication = new FrappeBasicAuthentication("username", "password");
+        defaultFrappeAuthentication = new DefaultFrappeAuthentication("username", "password");
     }
 
     @AfterAll
@@ -37,6 +37,6 @@ class FrappeBasicAuthenticationTest {
     @DisplayName("getBaseUrl should return correct base url")
     void getBaseUrlShouldReturnCorrectBaseUrl() {
         when(request.url()).thenReturn(HttpUrl.get("http://localhost:8080"));
-        assertEquals("http://localhost:8080", frappeBasicAuthentication.getBaseUrl(request));
+        assertEquals("http://localhost:8080", defaultFrappeAuthentication.getBaseUrl(request));
     }
 }

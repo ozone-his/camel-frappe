@@ -62,9 +62,7 @@ public abstract class AbstractOperation<T> implements ParameterizedOperation<T> 
 
     @Override
     public ParameterizedOperation<T> withParameter(String name, String value) {
-        List<String> values = queryParams.computeIfAbsent(name, k -> new ArrayList<>());
-        values.add(value);
-        this.queryParams.put(name, values);
+        this.queryParams.computeIfAbsent(name, k -> new ArrayList<>()).add(value);
         return this;
     }
 

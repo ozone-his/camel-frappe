@@ -2,7 +2,7 @@ package com.ozonehis.camel.frappe.sdk;
 
 import com.ozonehis.camel.frappe.sdk.api.security.FrappeAuthentication;
 import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
-import com.ozonehis.camel.frappe.sdk.internal.security.FrappeBasicAuthentication;
+import com.ozonehis.camel.frappe.sdk.internal.security.DefaultFrappeAuthentication;
 import com.ozonehis.camel.frappe.sdk.internal.transformer.JacksonTransformer;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +37,7 @@ public class FrappeClientBuilder {
     }
 
     public static FrappeClientBuilder newClient(String baseApiUrl, String username, String password) {
-        return new FrappeClientBuilder(baseApiUrl, new FrappeBasicAuthentication(username, password));
+        return new FrappeClientBuilder(baseApiUrl, new DefaultFrappeAuthentication(username, password));
     }
 
     public FrappeClientBuilder maxIdleConnections(int maxIdleConnections) {

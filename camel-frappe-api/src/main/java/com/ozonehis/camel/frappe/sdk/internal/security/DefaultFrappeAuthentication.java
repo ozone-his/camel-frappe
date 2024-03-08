@@ -12,13 +12,13 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 @Slf4j
-public class FrappeBasicAuthentication implements FrappeAuthentication {
+public class DefaultFrappeAuthentication implements FrappeAuthentication {
 
     private final String username;
 
     private final String password;
 
-    public FrappeBasicAuthentication(String username, String password) {
+    public DefaultFrappeAuthentication(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -59,7 +59,7 @@ public class FrappeBasicAuthentication implements FrappeAuthentication {
 
     private List<String> extractCookies(Response response) {
         if (response.isSuccessful()) {
-            log.info("Logged in successfully");
+            log.info("Authentication successful setting session cookie.");
             return response.headers("set-cookie");
         } else {
             log.error("Failed to login, {}", response.body());

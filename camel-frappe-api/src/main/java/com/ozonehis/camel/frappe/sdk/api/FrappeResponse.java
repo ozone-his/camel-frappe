@@ -45,6 +45,12 @@ public interface FrappeResponse extends Closeable {
     int code();
 
     /**
+     * This method returns the response message.
+     * @return The response message.
+     */
+    String message();
+
+    /**
      * This method returns the response body.
      * @return The response body.
      */
