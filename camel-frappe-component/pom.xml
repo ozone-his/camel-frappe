@@ -61,7 +61,6 @@
       <version>1.19.6</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-test-junit5</artifactId>
@@ -71,9 +70,27 @@
 
   <build>
     <defaultGoal>install</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.camel</groupId>
+          <artifactId>camel-api-component-maven-plugin</artifactId>
+          <version>${camel.version}</version>
+          <configuration>
+            <scheme>${schemeName}</scheme>
+            <componentName>${componentName}</componentName>
+            <componentPackage>${componentPackage}</componentPackage>
+            <outPackage>${outPackage}</outPackage>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
     <plugins>
-      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -82,7 +99,6 @@
           <release>17</release>
         </configuration>
       </plugin>
-      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -96,6 +112,14 @@
       <plugin>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-api-component-maven-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>com.ozonehis.camel</groupId>
+            <artifactId>camel-frappe-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <classifier>sources</classifier>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>generate-test-component-classes</id>
@@ -107,7 +131,7 @@
                 <api>
                   <apiName>get</apiName>
                   <proxyClass>com.ozonehis.camel.api.proxy.FrappeGet</proxyClass>
-                  <fromJavasource />
+                  <fromJavasource/>
                   <nullableOptions>
                     <nullableOption>fields</nullableOption>
                     <nullableOption>filters</nullableOption>
@@ -117,30 +141,22 @@
                 <api>
                   <apiName>post</apiName>
                   <proxyClass>com.ozonehis.camel.api.proxy.FrappePost</proxyClass>
-                  <fromJavasource />
+                  <fromJavasource/>
                 </api>
                 <api>
                   <apiName>put</apiName>
                   <proxyClass>com.ozonehis.camel.api.proxy.FrappePut</proxyClass>
-                  <fromJavasource />
+                  <fromJavasource/>
                 </api>
                 <api>
                   <apiName>delete</apiName>
                   <proxyClass>com.ozonehis.camel.api.proxy.FrappeDelete</proxyClass>
-                  <fromJavasource />
+                  <fromJavasource/>
                 </api>
               </apis>
             </configuration>
           </execution>
         </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.ozonehis.camel</groupId>
-            <artifactId>camel-frappe-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <classifier>sources</classifier>
-          </dependency>
-        </dependencies>
       </plugin>
 
       <!-- generate camel meta-data -->
@@ -189,29 +205,7 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
-
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.camel</groupId>
-          <artifactId>camel-api-component-maven-plugin</artifactId>
-          <version>${camel.version}</version>
-          <configuration>
-            <scheme>${schemeName}</scheme>
-            <componentName>${componentName}</componentName>
-            <componentPackage>${componentPackage}</componentPackage>
-            <outPackage>${outPackage}</outPackage>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.1.2</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
   </build>
 
   <reporting>
@@ -229,5 +223,4 @@
       </plugin>
     </plugins>
   </reporting>
-
 </project>

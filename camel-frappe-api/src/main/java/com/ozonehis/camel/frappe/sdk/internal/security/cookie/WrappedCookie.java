@@ -10,18 +10,18 @@ import okhttp3.HttpUrl;
 @EqualsAndHashCode
 @AllArgsConstructor
 public class WrappedCookie {
-	
-	private Cookie cookie;
-	
-	public boolean isExpired() {
-		return cookie.expiresAt() < System.currentTimeMillis();
-	}
-	
-	public Cookie unwrap() {
-		return cookie;
-	}
-	
-	public boolean matches(HttpUrl url) {
-		return cookie.matches(url);
-	}
+
+    private Cookie cookie;
+
+    public boolean isExpired() {
+        return cookie.expiresAt() < System.currentTimeMillis();
+    }
+
+    public Cookie unwrap() {
+        return cookie;
+    }
+
+    public boolean matches(HttpUrl url) {
+        return cookie.matches(url);
+    }
 }

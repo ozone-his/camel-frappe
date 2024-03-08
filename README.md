@@ -1,7 +1,7 @@
 # Camel Frappe Component
 
-
 This is a Camel component that provides integration with Frappe. It allows you to interact with [Frappe's REST API](https://frappeframework.com/docs/user/en/api/rest).
+
 ## URI format
 
 ```
@@ -51,7 +51,6 @@ from("direct:createItem")
     .to("frappe://post/resource?doctype=Item&resource={\"item_name\":\"Test Item\"}")
     .end();
 ```
-
 
 ## Building
 

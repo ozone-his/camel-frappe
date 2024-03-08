@@ -51,12 +51,14 @@
 
   <build>
     <defaultGoal>install</defaultGoal>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.3.0</version>
+        <configuration>
+          <classifier>sources</classifier>
+        </configuration>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -65,12 +67,7 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <classifier>sources</classifier>
-        </configuration>
       </plugin>
-
     </plugins>
   </build>
-
 </project>

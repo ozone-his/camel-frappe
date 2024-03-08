@@ -1,5 +1,12 @@
 package com.ozonehis.camel.frappe.sdk.internal.security.cookie;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
+
+import java.util.Date;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import org.junit.jupiter.api.AfterAll;
@@ -8,21 +15,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
-
 class WrappedCookieTest {
 
     @Mock
     private Cookie cookie;
 
     private WrappedCookie wrappedCookie;
-    
+
     private static AutoCloseable mocksCloser;
 
     @BeforeEach
@@ -30,7 +29,7 @@ class WrappedCookieTest {
         mocksCloser = openMocks(this);
         wrappedCookie = new WrappedCookie(cookie);
     }
-    
+
     @AfterAll
     static void closeMocks() throws Exception {
         mocksCloser.close();

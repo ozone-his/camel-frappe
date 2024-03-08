@@ -1,6 +1,16 @@
 package com.ozonehis.camel.frappe.sdk.internal.operation;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,17 +21,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
-
 class DefaultGetOperationTest {
 
     @Mock
@@ -29,12 +28,12 @@ class DefaultGetOperationTest {
 
     @Mock
     private Transformer transformer;
-    
+
     @Mock
     private Call call;
 
     private static AutoCloseable mocksCloser;
-    
+
     private DefaultGetOperation defaultGetOperation;
 
     @BeforeEach
@@ -48,15 +47,14 @@ class DefaultGetOperationTest {
         responseBuilder.body(okhttp3.ResponseBody.create("{}", okhttp3.MediaType.parse("application/json")));
         responseBuilder.protocol(okhttp3.Protocol.HTTP_1_1);
         when(call.execute()).thenReturn(responseBuilder.build());
-        
+
         defaultGetOperation = new DefaultGetOperation("http://localhost", "/path", httpClient, transformer, "param");
     }
-    
+
     @AfterAll
     static void closeMocks() throws Exception {
         mocksCloser.close();
     }
-    
 
     @Test
     @DisplayName("execute should throw IllegalArgumentException when URL is invalid")
@@ -69,10 +67,10 @@ class DefaultGetOperationTest {
     @DisplayName("execute should add fields to query parameters when fields are not empty")
     void executeShouldAddFieldsToQueryParametersWhenFieldsAreNotEmpty() {
         defaultGetOperation.withFields(Arrays.asList("field1", "field2"));
-        
+
         var response = defaultGetOperation.execute();
-        
-	    assertNotNull(response);
+
+        assertNotNull(response);
         verify(httpClient).newCall(any(Request.class));
     }
 
@@ -81,7 +79,7 @@ class DefaultGetOperationTest {
     void executeShouldNotAddFieldsToQueryParametersWhenFieldsAreEmpty() {
         defaultGetOperation.withFields(Collections.emptyList());
         defaultGetOperation.execute();
-        
+
         verify(httpClient).newCall(any(Request.class));
     }
 
@@ -90,7 +88,7 @@ class DefaultGetOperationTest {
     void executeShouldAddFiltersToQueryParametersWhenFiltersAreNotEmpty() {
         defaultGetOperation.withFilters(Arrays.asList(Arrays.asList("filter1", "filter2")));
         defaultGetOperation.execute();
-        
+
         verify(httpClient).newCall(any(Request.class));
     }
 
@@ -99,7 +97,7 @@ class DefaultGetOperationTest {
     void executeShouldNotAddFiltersToQueryParametersWhenFiltersAreEmpty() {
         defaultGetOperation.withFilters(Collections.emptyList());
         defaultGetOperation.execute();
-        
+
         verify(httpClient).newCall(any(Request.class));
     }
 }

@@ -9,6 +9,7 @@ import com.ozonehis.camel.internal.FrappeApiCollection;
 import com.ozonehis.camel.internal.FrappeApiName;
 import com.ozonehis.camel.internal.FrappeConstants;
 import com.ozonehis.camel.internal.FrappePropertiesHelper;
+import java.util.Map;
 import org.apache.camel.Category;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
@@ -19,25 +20,38 @@ import org.apache.camel.support.component.AbstractApiEndpoint;
 import org.apache.camel.support.component.ApiMethod;
 import org.apache.camel.support.component.ApiMethodPropertiesHelper;
 
-import java.util.Map;
-
 /**
  *  Frappe component to integrate with Frappe REST API.
  *
  */
-@UriEndpoint(firstVersion = "1.0.0", scheme = "frappe", title = "Frappe", syntax="frappe:apiName/methodName",
-            apiSyntax = "apiName/methodName",category = {Category.API})
+@UriEndpoint(
+        firstVersion = "1.0.0",
+        scheme = "frappe",
+        title = "Frappe",
+        syntax = "frappe:apiName/methodName",
+        apiSyntax = "apiName/methodName",
+        category = {Category.API})
 public class FrappeEndpoint extends AbstractApiEndpoint<FrappeApiName, FrappeConfiguration> {
-    
+
     @UriParam
     private final FrappeConfiguration configuration;
-    
+
     private Object apiProxy;
 
-    public FrappeEndpoint(String uri, FrappeComponent component,
-                         FrappeApiName apiName, String methodName, FrappeConfiguration endpointConfiguration) {
-        super(uri, component, apiName, methodName, FrappeApiCollection.getCollection().getHelper(apiName), endpointConfiguration);
-	    this.configuration = endpointConfiguration;
+    public FrappeEndpoint(
+            String uri,
+            FrappeComponent component,
+            FrappeApiName apiName,
+            String methodName,
+            FrappeConfiguration endpointConfiguration) {
+        super(
+                uri,
+                component,
+                apiName,
+                methodName,
+                FrappeApiCollection.getCollection().getHelper(apiName),
+                endpointConfiguration);
+        this.configuration = endpointConfiguration;
     }
 
     public Producer createProducer() {
@@ -88,7 +102,7 @@ public class FrappeEndpoint extends AbstractApiEndpoint<FrappeApiName, FrappeCon
     public Object getApiProxy(ApiMethod method, Map<String, Object> args) {
         return apiProxy;
     }
-    
+
     protected FrappeClient getClient() {
         return ((FrappeComponent) this.getComponent()).getClient(this.configuration);
     }
