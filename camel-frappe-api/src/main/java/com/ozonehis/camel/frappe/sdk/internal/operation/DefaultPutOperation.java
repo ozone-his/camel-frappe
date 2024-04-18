@@ -23,7 +23,7 @@ public class DefaultPutOperation extends AbstractResourceOperation implements Pu
     protected FrappeResponse doResourceExecute(byte[] resourceAsBytes, Request.Builder requestBuilder) {
         Request request = requestBuilder
                 .put(RequestBody.create(resourceAsBytes))
-                .url(baseApiUrl + doctype + "/" + nameOfResourceToBeUpdated)
+                .url(this.url + "/" + nameOfResourceToBeUpdated)
                 .build();
         okhttp3.Response response =
                 onHttpResponse(() -> httpClient.newCall(request).execute());

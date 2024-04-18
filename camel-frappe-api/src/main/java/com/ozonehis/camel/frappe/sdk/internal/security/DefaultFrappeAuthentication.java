@@ -59,7 +59,6 @@ public class DefaultFrappeAuthentication implements FrappeAuthentication {
 
     private List<String> extractCookies(Response response) {
         if (response.isSuccessful()) {
-            log.info("Authentication successful setting session cookie.");
             return response.headers("set-cookie");
         } else {
             log.error("Failed to login, {}", response.body());

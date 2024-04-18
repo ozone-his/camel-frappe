@@ -21,7 +21,7 @@ public class DefaultDeleteOperation extends AbstractResourceOperation implements
     protected FrappeResponse doResourceExecute(byte[] resourceAsBytes, Request.Builder requestBuilder) {
         Request request = requestBuilder
                 .delete()
-                .url(baseApiUrl + doctype + "/" + nameOfResourceToBeDeleted)
+                .url(this.url + "/" + nameOfResourceToBeDeleted)
                 .build();
         okhttp3.Response response =
                 onHttpResponse(() -> httpClient.newCall(request).execute());

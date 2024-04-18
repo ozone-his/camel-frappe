@@ -5,7 +5,9 @@ import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import com.ozonehis.camel.frappe.sdk.internal.security.DefaultFrappeAuthentication;
 import com.ozonehis.camel.frappe.sdk.internal.transformer.JacksonTransformer;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class FrappeClientBuilder {
 
     private final FrappeAuthentication authentication;
@@ -78,8 +80,12 @@ public class FrappeClientBuilder {
     public DefaultFrappeClient build() {
         StringBuilder baseApiPath = new StringBuilder();
         baseApiPath.append(this.baseApiUrl);
-        if (!baseApiUrl.endsWith("/")) {
-            baseApiPath.append("/");
+        if (baseApiUrl == null || baseApiUrl.isEmpty()) {
+            log.warn("Base API URL is not set.");
+        } else {
+            if (!baseApiUrl.endsWith("/")) {
+                baseApiPath.append("/");
+            }
         }
 
         return new DefaultFrappeClient(

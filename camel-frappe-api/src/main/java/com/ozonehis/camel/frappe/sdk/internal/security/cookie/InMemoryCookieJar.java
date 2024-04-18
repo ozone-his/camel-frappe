@@ -10,11 +10,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class InMemoryCookieJar implements CookieJar {
 
-    private final List<WrappedCookie> cookiesCache = new ArrayList<>();
+    private final List<WrappedCookie> cookieCache = new ArrayList<>();
 
     @NotNull @Override
     public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
-        return this.cookiesCache.stream()
+        return this.cookieCache.stream()
                 .filter(cookie -> cookie.matches(httpUrl) && !cookie.isExpired())
                 .collect(ArrayList::new, (list, cookie) -> list.add(cookie.unwrap()), ArrayList::addAll);
     }
@@ -23,17 +23,17 @@ public class InMemoryCookieJar implements CookieJar {
     public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> cookies) {
         List<WrappedCookie> wrappedCookies =
                 cookies.stream().map(WrappedCookie::new).toList();
-        this.cookiesCache.removeAll(wrappedCookies);
-        this.cookiesCache.addAll(wrappedCookies);
+        this.clear();
+        this.cookieCache.addAll(wrappedCookies);
     }
 
     @Synchronized
     public void clear() {
-        this.cookiesCache.clear();
+        this.cookieCache.clear();
     }
 
     @Synchronized
     public void clearExpired() {
-        this.cookiesCache.removeIf(WrappedCookie::isExpired);
+        this.cookieCache.removeIf(WrappedCookie::isExpired);
     }
 }
