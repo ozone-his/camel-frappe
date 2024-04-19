@@ -16,6 +16,19 @@
     <module>camel-frappe-api</module>
   </modules>
 
+  <distributionManagement>
+    <repository>
+      <id>mks-nexus-public-releases</id>
+      <name>Mekom Solutions Nexus repo for releases</name>
+      <url>https://nexus.mekomsolutions.net/repository/maven-releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>mks-nexus-public-snapshots</id>
+      <name>Mekom Solutions Nexus repo for snapshots</name>
+      <url>https://nexus.mekomsolutions.net/repository/maven-snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
     <camel.version>4.4.0</camel.version>
     <testcontainers.version>1.19.4</testcontainers.version>
