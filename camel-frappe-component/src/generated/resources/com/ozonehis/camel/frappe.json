@@ -11,7 +11,7 @@
     "supportLevel": "Preview",
     "groupId": "com.ozonehis.camel",
     "artifactId": "camel-frappe",
-    "version": "1.0.0-SNAPSHOT",
+    "version": "1.0.0",
     "scheme": "frappe",
     "extendsScheme": "",
     "syntax": "frappe:apiName\/methodName",
