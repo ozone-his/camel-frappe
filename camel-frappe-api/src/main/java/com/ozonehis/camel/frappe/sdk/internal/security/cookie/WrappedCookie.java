@@ -1,27 +1,24 @@
 package com.ozonehis.camel.frappe.sdk.internal.security.cookie;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import okhttp3.Cookie;
-import okhttp3.HttpUrl;
 
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
 public class WrappedCookie {
 
-    private Cookie cookie;
+    private long expiresAt;
+
+    private List<String> cookies;
 
     public boolean isExpired() {
-        return cookie.expiresAt() < System.currentTimeMillis();
+        return expiresAt < System.currentTimeMillis();
     }
 
-    public Cookie unwrap() {
-        return cookie;
-    }
-
-    public boolean matches(HttpUrl url) {
-        return cookie.matches(url);
+    public List<String> unwrap() {
+        return cookies;
     }
 }
