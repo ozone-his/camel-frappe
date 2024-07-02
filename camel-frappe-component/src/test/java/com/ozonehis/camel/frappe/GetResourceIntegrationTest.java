@@ -35,10 +35,12 @@ public class GetResourceIntegrationTest extends AbstractFrappeTestSupport {
 
     @Test
     public void shouldGetResourceWithAnyDocType() {
-        var customer = requestBodyAndHeaders("direct://getCustomer", null, new HashMap<>(), String.class);
+        var headers = new HashMap<String, Object>();
+        headers.put("CamelFrappe.doctype", "Address");
+        var address = requestBodyAndHeaders("direct://getCustomer", null, headers, String.class);
 
-        assertNotNull(customer, "Get Customer Doctype");
-        assertEquals("{\"data\":[]}", customer, "Customer is an Empty list");
+        assertNotNull(address, "Get Address Doctype");
+        assertEquals("{\"data\":[]}", address, "Address is an Empty list");
     }
 
     @Test
@@ -47,6 +49,8 @@ public class GetResourceIntegrationTest extends AbstractFrappeTestSupport {
         var fields =
                 List.of("customer_name", "customer_type", "territory", "customer_group", "customer_primary_contact");
         headers.put("CamelFrappe.fields", fields);
+        headers.put("CamelFrappe.doctype", CUSTOMER_DOCTYPE);
+        headers.put("CamelFrappe.filters", List.of(List.of("customer_name", "=", "James")));
 
         var customer = requestBodyAndHeaders("direct://getCustomer", null, headers, String.class);
 
@@ -57,7 +61,7 @@ public class GetResourceIntegrationTest extends AbstractFrappeTestSupport {
     @Test
     public void shouldGetResourceWithAnyDocTypeAndFilters() {
         var headers = new HashMap<String, Object>();
-        var filters = List.of(List.of("customer_name", "=", "John"));
+        var filters = List.of(List.of("customer_name", "=", "James"));
         headers.put("CamelFrappe.filters", filters);
 
         var customer = requestBodyAndHeaders("direct://getCustomer", null, headers, String.class);

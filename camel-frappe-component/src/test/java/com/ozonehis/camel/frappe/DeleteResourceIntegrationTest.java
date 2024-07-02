@@ -22,7 +22,7 @@ public class DeleteResourceIntegrationTest extends AbstractFrappeTestSupport {
             .getApiName(FrappeDeleteApiMethod.class)
             .getName();
 
-    private static final String CUSTOMER_JSON = "{\"customer_name\":\"John\",\"customer_type\":\"Company\"}";
+    private static final String CUSTOMER_JSON = "{\"customer_name\":\"Joseph\",\"customer_type\":\"Company\"}";
 
     @Override
     protected RouteBuilder createRouteBuilder() {
@@ -59,17 +59,17 @@ public class DeleteResourceIntegrationTest extends AbstractFrappeTestSupport {
 
         // Get just created customer named John
         var getHeaders = new HashMap<String, Object>();
-        getHeaders.put("CamelFrappe.filters", List.of(List.of("customer_name", "=", "John")));
+        getHeaders.put("CamelFrappe.filters", List.of(List.of("customer_name", "=", "Joseph")));
         getHeaders.put("CamelFrappe.fields", List.of("customer_name", "customer_type", "name"));
 
         var customer = requestBodyAndHeaders("direct://getCustomer", null, getHeaders, String.class);
 
         assertNotNull(customer);
-        assertTrue(customer.contains("John"));
+        assertTrue(customer.contains("Joseph"));
 
         // Delete the customer
         var deleteHeaders = new HashMap<String, Object>();
-        deleteHeaders.put("CamelFrappe.name", "John");
+        deleteHeaders.put("CamelFrappe.name", "Joseph");
 
         requestBodyAndHeaders("direct://deleteCustomer", null, deleteHeaders, String.class);
 

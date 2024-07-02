@@ -7,26 +7,35 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.apache.camel.CamelExecutionException;
+import org.apache.camel.model.ModelCamelContext;
 import org.apache.camel.test.junit5.CamelTestSupport;
+import org.junit.jupiter.api.AfterEach;
 import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * Abstract base class for Frappé Integration tests.
  */
 @Slf4j
-@Testcontainers
 public abstract class AbstractFrappeTestSupport extends CamelTestSupport {
 
-    @Container
     public static ComposeContainer environment = new ComposeContainer(
                     new File("src/test/resources/docker/compose-test.yml"))
             .withLocalCompose(true)
             .withStartupTimeout(java.time.Duration.ofMinutes(5))
             .withExposedService("frontend", 8080, Wait.forHttp("/").forStatusCode(200))
             .withTailChildContainers(true);
+
+    static {
+        environment.start();
+    }
+
+    // reset camel context after each test
+    @AfterEach
+    public void resetCamelContext() throws Exception {
+        context.stop();
+        context = (ModelCamelContext) createCamelContext();
+    }
 
     public static FrappeClient getFrappeClient() {
         var host = environment.getServiceHost("frontend", 8080);
