@@ -13,7 +13,7 @@ public class CookieCache {
 
     private final ConcurrentHashMap<String, WrappedCookie> cookieStore = new ConcurrentHashMap<>();
 
-    public static CookieCache getInstance() {
+    public static synchronized CookieCache getInstance() {
         if (instance == null) {
             instance = new CookieCache();
         }
