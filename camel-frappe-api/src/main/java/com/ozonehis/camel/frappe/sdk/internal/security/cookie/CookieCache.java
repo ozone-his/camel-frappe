@@ -27,6 +27,9 @@ public class CookieCache {
      * @param cookies the wrappedCookies
      */
     public void put(String cookieName, WrappedCookie cookies) {
+        if (get(cookieName) != null) {
+            cookieStore.remove(cookieName);
+        }
         cookieStore.put(cookieName, cookies);
     }
 

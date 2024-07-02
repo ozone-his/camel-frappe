@@ -4,7 +4,6 @@ import com.ozonehis.camel.frappe.sdk.api.security.FrappeAuthentication;
 import com.ozonehis.camel.frappe.sdk.internal.security.cookie.CookieCache;
 import com.ozonehis.camel.frappe.sdk.internal.security.cookie.WrappedCookie;
 import java.io.IOException;
-import java.util.List;
 import javax.security.sasl.AuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Cookie;
@@ -22,10 +21,6 @@ public class DefaultFrappeAuthentication implements FrappeAuthentication {
 
     private final String password;
 
-    private static final String SESSION_COOKIE_NAME = "session-cookie";
-
-    CookieCache cookieCache = CookieCache.getInstance();
-
     public DefaultFrappeAuthentication(String username, String password) {
         this.username = username;
         this.password = password;
@@ -35,35 +30,35 @@ public class DefaultFrappeAuthentication implements FrappeAuthentication {
     public Response intercept(@NotNull Chain chain) throws IOException {
         final Request original = chain.request();
         final Request authorized = original.newBuilder()
-                .addHeader("Cookie", String.join("; ", getSessionCookie(original)))
+                .addHeader("Cookie", getSessionCookies(original))
                 .build();
         return chain.proceed(authorized);
     }
 
-    public List<String> getSessionCookie(Request incomingRequest) throws IOException {
-        WrappedCookie sessionCookie = cookieCache.get(SESSION_COOKIE_NAME);
-        if (sessionCookie != null && !sessionCookie.isExpired()) {
-            log.debug("Session cookie found and not expired. Using it...");
-            return sessionCookie.unwrap();
-        } else {
-            log.debug("Session cookie not found or expired. Logging in...");
-            return login(incomingRequest, cookieCache);
+    public String getSessionCookies(Request incomingRequest) throws IOException {
+        String[] cookieNames = {"sid", "system_user", "full_name", "user_id", "user_image"};
+        StringBuilder cookies = new StringBuilder();
+        for (String cookieName : cookieNames) {
+            WrappedCookie cookie = CookieCache.getInstance().get(cookieName);
+            if (cookie != null && !cookie.isExpired()) {
+                cookies.append(cookieName).append("=").append(cookie.unwrap()).append("; ");
+            }
         }
+        // Make sure the sid cookie is included
+        if (!cookies.toString().contains("sid") || cookies.isEmpty()) {
+            if (log.isDebugEnabled()) log.debug("SID session cookie expired, logging in again...");
+            login(incomingRequest);
+            return getSessionCookies(incomingRequest);
+        }
+        return cookies.toString();
     }
 
-    private List<String> login(Request incomingRequest, CookieCache cookieCache) throws IOException {
-        var baseUrl = getBaseUrl(incomingRequest);
-        Request request = buildLoginRequest(baseUrl);
+    private void login(Request incomingRequest) throws IOException {
+        Request request = buildLoginRequest(getBaseUrl(incomingRequest));
         try (Response response = executeRequest(request)) {
-            var cookies = response.headers("set-cookie");
-            var cookieList = Cookie.parseAll(incomingRequest.url(), response.headers());
-            cookieList.forEach(cookie -> {
-                if (cookie.name().equalsIgnoreCase("sid") && !cookie.value().isEmpty()) {
-                    cookieCache.clearExpired();
-                    cookieCache.put(SESSION_COOKIE_NAME, new WrappedCookie(cookie.expiresAt(), cookies));
-                }
-            });
-            return cookies;
+            CookieCache.getInstance().clearExpired();
+            Cookie.parseAll(incomingRequest.url(), response.headers())
+                    .forEach(cookie -> CookieCache.getInstance().put(cookie.name(), new WrappedCookie(cookie)));
         } catch (IOException e) {
             throw new AuthenticationException("Error while logging in", e);
         }
