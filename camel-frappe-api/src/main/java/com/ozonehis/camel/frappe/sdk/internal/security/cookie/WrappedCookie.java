@@ -13,7 +13,8 @@ public class WrappedCookie {
     private Cookie cookie;
 
     public boolean isExpired() {
-        return cookie.expiresAt() < System.currentTimeMillis();
+        // 10 seconds grace period
+        return cookie.expiresAt() < (System.currentTimeMillis() - 10000);
     }
 
     public String unwrap() {

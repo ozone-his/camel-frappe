@@ -11,7 +11,6 @@ import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultDeleteOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultGetOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPostOperation;
 import com.ozonehis.camel.frappe.sdk.internal.operation.DefaultPutOperation;
-import com.ozonehis.camel.frappe.sdk.internal.security.cookie.InMemoryCookieJar;
 import java.util.concurrent.TimeUnit;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
@@ -34,10 +33,8 @@ public class DefaultFrappeClient implements FrappeClient {
             long readTimeout,
             long writeTimeout,
             long connectTimeout) {
-        InMemoryCookieJar inMemoryCookieJar = new InMemoryCookieJar();
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
                 .addInterceptor(authentication)
-                .cookieJar(inMemoryCookieJar)
                 .connectionPool(new ConnectionPool(maxIdleConnections, keepAliveDuration, TimeUnit.MILLISECONDS))
                 .callTimeout(callTimeout, TimeUnit.MILLISECONDS)
                 .readTimeout(readTimeout, TimeUnit.MILLISECONDS)

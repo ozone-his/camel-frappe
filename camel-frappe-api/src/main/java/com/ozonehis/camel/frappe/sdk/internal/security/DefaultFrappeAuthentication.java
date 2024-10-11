@@ -4,6 +4,9 @@ import com.ozonehis.camel.frappe.sdk.api.security.FrappeAuthentication;
 import com.ozonehis.camel.frappe.sdk.internal.security.cookie.CookieCache;
 import com.ozonehis.camel.frappe.sdk.internal.security.cookie.WrappedCookie;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.StringJoiner;
 import javax.security.sasl.AuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Cookie;
@@ -36,29 +39,36 @@ public class DefaultFrappeAuthentication implements FrappeAuthentication {
     }
 
     public String getSessionCookies(Request incomingRequest) throws IOException {
-        String[] cookieNames = {"sid", "system_user", "full_name", "user_id", "user_image"};
-        StringBuilder cookies = new StringBuilder();
-        for (String cookieName : cookieNames) {
-            WrappedCookie cookie = CookieCache.getInstance().get(cookieName);
-            if (cookie != null && !cookie.isExpired()) {
-                cookies.append(cookieName).append("=").append(cookie.unwrap()).append("; ");
-            }
-        }
-        // Make sure the sid cookie is included
-        if (!cookies.toString().contains("sid") || cookies.isEmpty()) {
-            if (log.isDebugEnabled()) log.debug("SID session cookie expired, logging in again...");
+        // Cookies to be included in the request
+        List<String> cookieSet = List.of("sid", "path", "domain", "Expires", "user_id", "full_name", "user_image");
+        Collection<WrappedCookie> wrappedCookies = CookieCache.getInstance().getAll();
+        if (wrappedCookies.isEmpty()) {
             login(incomingRequest);
             return getSessionCookies(incomingRequest);
+        }
+        StringJoiner cookies = new StringJoiner("; ");
+        for (WrappedCookie wrappedCookie : wrappedCookies) {
+            if (cookieSet.contains(wrappedCookie.getCookie().name())) {
+                cookies.add(wrappedCookie.getCookie().name() + "=" + wrappedCookie.unwrap());
+            }
         }
         return cookies.toString();
     }
 
     private void login(Request incomingRequest) throws IOException {
         Request request = buildLoginRequest(getBaseUrl(incomingRequest));
+        var cookieCache = CookieCache.getInstance();
         try (Response response = executeRequest(request)) {
-            CookieCache.getInstance().clearExpired();
+            cookieCache.clearExpired();
             Cookie.parseAll(incomingRequest.url(), response.headers())
-                    .forEach(cookie -> CookieCache.getInstance().put(cookie.name(), new WrappedCookie(cookie)));
+                    .forEach(cookie -> cookieCache.put(cookie.name(), new WrappedCookie(cookie)));
+            // Save the domain cookie.
+            // This is necessary because the domain cookie isn't included in the response headers.
+            cookieCache.put(
+                    "domain",
+                    new WrappedCookie(Cookie.parse(
+                            incomingRequest.url(),
+                            "domain=" + incomingRequest.url().host())));
         } catch (IOException e) {
             throw new AuthenticationException("Error while logging in", e);
         }

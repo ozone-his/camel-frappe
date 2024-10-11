@@ -1,5 +1,6 @@
 package com.ozonehis.camel.frappe.sdk.internal.security.cookie;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.NoArgsConstructor;
 
@@ -59,5 +60,14 @@ public class CookieCache {
                 cookieStore.remove(key);
             }
         });
+    }
+
+    /**
+     * Get all available cookies.
+     *
+     * @return the available cookies
+     */
+    public Collection<WrappedCookie> getAll() {
+        return cookieStore.values();
     }
 }

@@ -6,6 +6,7 @@ import com.ozonehis.camel.frappe.sdk.api.transformer.Transformer;
 import com.ozonehis.camel.frappe.sdk.internal.DefaultFrappeResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -27,21 +28,12 @@ public class DefaultGetOperation extends AbstractOperation<FrappeResponse> imple
     protected FrappeResponse doExecute(HttpUrl httpUrl) {
         HttpUrl.Builder httpUrlBuilder = httpUrl.newBuilder();
         if (!fields.isEmpty()) {
-            StringBuilder fieldsAsString = new StringBuilder();
-            fieldsAsString.append("[");
-            for (int i = 0; i < fields.size(); i++) {
-                fieldsAsString.append("\"").append(fields.get(i)).append("\"");
-                if (i < fields.size() - 1) {
-                    fieldsAsString.append(", ");
-                }
-            }
-            fieldsAsString.append("]");
-            httpUrlBuilder.addQueryParameter("fields", fieldsAsString.toString());
+            String fieldsAsString =
+                    fields.stream().map(field -> "\"" + field + "\"").collect(Collectors.joining(", ", "[", "]"));
+            httpUrlBuilder.addQueryParameter("fields", fieldsAsString);
         }
-
-        this.convertFiltersToString(filters)
+        convertFiltersToString(filters)
                 .ifPresent(filtersAsString -> httpUrlBuilder.addQueryParameter("filters", filtersAsString));
-
         okhttp3.Response response = onHttpResponse(() -> httpClient
                 .newCall(new Request.Builder().url(httpUrlBuilder.build()).get().build())
                 .execute());
