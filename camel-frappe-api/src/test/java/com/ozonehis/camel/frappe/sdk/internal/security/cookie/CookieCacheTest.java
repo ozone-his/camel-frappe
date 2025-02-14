@@ -81,7 +81,7 @@ class CookieCacheTest {
         cookieCache.put("expiredCookie", expiredWrappedCookie);
         cookieCache.put("validCookie", validWrappedCookie);
 
-        when(expiredCookie.expiresAt()).thenReturn(System.currentTimeMillis() - 1000);
+        when(expiredCookie.expiresAt()).thenReturn(System.currentTimeMillis() - 11000);
         when(validCookie.expiresAt()).thenReturn(System.currentTimeMillis() + 1000);
 
         cookieCache.clearExpired();

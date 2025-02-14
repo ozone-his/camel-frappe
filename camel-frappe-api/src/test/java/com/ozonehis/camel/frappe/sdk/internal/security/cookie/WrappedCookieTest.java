@@ -33,7 +33,7 @@ class WrappedCookieTest {
     @Test
     @DisplayName("isExpired should return true when expiresAt is less than current time")
     void isExpiredShouldReturnTrueWhenExpiresAtIsLessThanCurrentTime() {
-        when(mockCookie.expiresAt()).thenReturn(System.currentTimeMillis() - 1000);
+        when(mockCookie.expiresAt()).thenReturn(System.currentTimeMillis() - 11000); // 11 seconds in the past
 
         WrappedCookie wrappedCookie = new WrappedCookie(mockCookie);
 
@@ -57,6 +57,6 @@ class WrappedCookieTest {
 
         WrappedCookie wrappedCookie = new WrappedCookie(mockCookie);
 
-        assertEquals(wrappedCookie.unwrap(), "cookie1; cookie2");
+        assertEquals("cookie1; cookie2", wrappedCookie.unwrap());
     }
 }
